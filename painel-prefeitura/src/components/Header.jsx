@@ -3,10 +3,10 @@ import { Bell, Plus, CheckCircle, AlertCircle, Bot } from 'lucide-react';
 
 export default function Header({ title, subtitle, onNew, onViewAllNotifs }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [temNaoLidas, setTemNaoLidas] = useState(true);
   const dropdownRef = useRef(null);
 
-  const notificacoes = [
+  // Transformamos as notificações num estado do React para as podermos manipular
+  const [notificacoes, setNotificacoes] = useState([
     { 
       id: 1, 
       titulo: 'Novo Chamado Recebido', 
@@ -14,7 +14,8 @@ export default function Header({ title, subtitle, onNew, onViewAllNotifs }) {
       tempo: 'Há 5 min', 
       icone: AlertCircle, 
       cor: 'text-yellow-600', 
-      bg: 'bg-yellow-100' 
+      bg: 'bg-yellow-100',
+      lida: false
     },
     { 
       id: 2, 
@@ -23,7 +24,8 @@ export default function Header({ title, subtitle, onNew, onViewAllNotifs }) {
       tempo: 'Há 12 min', 
       icone: Bot, 
       cor: 'text-purple-600', 
-      bg: 'bg-purple-100' 
+      bg: 'bg-purple-100',
+      lida: false
     },
     { 
       id: 3, 
@@ -32,9 +34,13 @@ export default function Header({ title, subtitle, onNew, onViewAllNotifs }) {
       tempo: 'Há 2 horas', 
       icone: CheckCircle, 
       cor: 'text-green-600', 
-      bg: 'bg-green-100' 
+      bg: 'bg-green-100',
+      lida: false
     },
-  ];
+  ]);
+
+  // Verifica automaticamente se ainda existe alguma notificação por ler (para mostrar o ponto vermelho no sino)
+  const temNaoLidas = notificacoes.some(notif => !notif.lida);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -48,9 +54,6 @@ export default function Header({ title, subtitle, onNew, onViewAllNotifs }) {
 
   const handleToggleMenu = () => {
     setIsOpen(!isOpen);
-    if (!isOpen) {
-      setTemNaoLidas(false);
-    }
   };
 
   const handleVerHistorico = () => {
@@ -58,6 +61,20 @@ export default function Header({ title, subtitle, onNew, onViewAllNotifs }) {
     if (onViewAllNotifs) {
       onViewAllNotifs();
     }
+  };
+
+  // Função disparada ao clicar em "Marcar todas como lidas"
+  const handleMarcarTodasLidas = () => {
+    const atualizadas = notificacoes.map(n => ({ ...n, lida: true }));
+    setNotificacoes(atualizadas);
+  };
+
+  // Função para marcar apenas UMA notificação como lida ao clicar nela
+  const handleLerNotificacao = (id) => {
+    const atualizadas = notificacoes.map(n => 
+      n.id === id ? { ...n, lida: true } : n
+    );
+    setNotificacoes(atualizadas);
   };
 
   return (
@@ -87,30 +104,48 @@ export default function Header({ title, subtitle, onNew, onViewAllNotifs }) {
               
               <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
                 <h3 className="font-bold text-slate-800">Notificações</h3>
-                <span className="text-xs font-medium text-blue-600 cursor-pointer hover:underline">
-                  Marcar todas como lidas
-                </span>
+                {/* O botão só aparece se houver notificações não lidas */}
+                {temNaoLidas && (
+                  <span 
+                    onClick={handleMarcarTodasLidas}
+                    className="text-xs font-medium text-blue-600 cursor-pointer hover:underline"
+                  >
+                    Marcar todas como lidas
+                  </span>
+                )}
               </div>
               
               <div className="max-h-[320px] overflow-y-auto">
                 {notificacoes.map((notif) => {
                   const Icone = notif.icone;
                   return (
-                    <div key={notif.id} className="p-4 border-b border-slate-50 hover:bg-slate-50 transition-colors cursor-pointer flex gap-3">
+                    <div 
+                      key={notif.id} 
+                      onClick={() => handleLerNotificacao(notif.id)}
+                      className={`p-4 border-b border-slate-50 hover:bg-slate-100 transition-colors cursor-pointer flex gap-3 ${!notif.lida ? 'bg-blue-50/20' : 'bg-white'}`}
+                    >
                       <div className={`p-2 rounded-full h-fit flex-shrink-0 ${notif.bg} ${notif.cor}`}>
                         <Icone size={16} />
                       </div>
-                      <div>
-                        <p className="text-sm font-bold text-slate-800 leading-tight mb-1">{notif.titulo}</p>
-                        <p className="text-xs text-slate-500">{notif.msg}</p>
+                      <div className="flex-1">
+                        <p className={`text-sm leading-tight mb-1 ${!notif.lida ? 'font-bold text-slate-900' : 'font-medium text-slate-600'}`}>
+                          {notif.titulo}
+                        </p>
+                        <p className={`text-xs ${!notif.lida ? 'text-slate-600' : 'text-slate-400'}`}>
+                          {notif.msg}
+                        </p>
                         <p className="text-[10px] text-slate-400 mt-2 font-medium">{notif.tempo}</p>
                       </div>
+                      
+                      {/* Ponto azul lateral para as notificações não lidas */}
+                      {!notif.lida && (
+                        <div className="w-2 h-2 rounded-full bg-blue-500 mt-1 flex-shrink-0"></div>
+                      )}
                     </div>
                   );
                 })}
               </div>
               
-              {/* O Botão de "Ver histórico" atualizado com o efeito visual ao passar o rato (hover) */}
               <div className="p-2 border-t border-slate-100 bg-slate-50/50">
                 <button 
                   onClick={handleVerHistorico}

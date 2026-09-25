@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { MoreHorizontal, MessageSquare, Paperclip, Clock, AlertCircle } from 'lucide-react';
 
 export default function Kanban() {
-  // Simulação de dados estruturados em colunas para o Kanban
-  const colunas = [
-    {
+  // Transformamos as colunas num objeto de estado (state) para que o React atualize o ecrã quando movermos os cartões
+  const [colunas, setColunas] = useState({
+    abertos: {
       id: 'abertos',
       titulo: 'Abertos',
       corHeader: 'border-yellow-500',
@@ -15,7 +15,7 @@ export default function Kanban() {
         { id: 'CH-2850', solicitante: 'Carlos Eduardo', categoria: 'Limpeza Urbana', prioridade: 'Baixa', dias: 'Há 2 dias', comentarios: 1, anexos: 0 },
       ]
     },
-    {
+    andamento: {
       id: 'andamento',
       titulo: 'Em Andamento',
       corHeader: 'border-blue-500',
@@ -25,9 +25,9 @@ export default function Kanban() {
         { id: 'CH-2843', solicitante: 'Claudia B.', categoria: 'Poda de Árvores', prioridade: 'Média', dias: 'Há 4 dias', comentarios: 1, anexos: 1 },
       ]
     },
-    {
+    concluidos: {
       id: 'concluidos',
-      titulo: 'Concluídos (Últimos 7 dias)',
+      titulo: 'Concluídos',
       corHeader: 'border-green-500',
       bgCor: 'bg-slate-100',
       chamados: [
@@ -35,9 +35,11 @@ export default function Kanban() {
         { id: 'CH-2840', solicitante: 'Fernando Costa', categoria: 'Iluminação Pública', prioridade: 'Média', dias: 'Concluído há 3 dias', comentarios: 3, anexos: 2 },
       ]
     }
-  ];
+  });
 
-  // Função auxiliar para cores das tags de prioridade
+  // Estado para realçar a coluna que está a receber o cartão por cima
+  const [colunaAlvo, setColunaAlvo] = useState(null);
+
   const getCorPrioridade = (prioridade) => {
     switch (prioridade) {
       case 'Alta': return 'bg-red-100 text-red-700';
@@ -47,12 +49,88 @@ export default function Kanban() {
     }
   };
 
+  // --- Funções de Drag and Drop ---
+
+  // 1. Quando começamos a arrastar um cartão
+  const handleDragStart = (e, chamadoId, colunaOrigemId) => {
+    e.dataTransfer.setData('chamadoId', chamadoId);
+    e.dataTransfer.setData('colunaOrigemId', colunaOrigemId);
+    
+    // Efeito visual para o cartão que está a ser arrastado
+    setTimeout(() => {
+      e.target.classList.add('opacity-40');
+    }, 0);
+  };
+
+  // 2. Quando largamos o cartão (termina o arrasto)
+  const handleDragEnd = (e) => {
+    e.target.classList.remove('opacity-40');
+    setColunaAlvo(null);
+  };
+
+  // 3. Quando arrastamos um cartão por cima de uma coluna válida
+  const handleDragOver = (e, colunaId) => {
+    e.preventDefault(); // Necessário para permitir o Drop (largar)
+    if (colunaAlvo !== colunaId) {
+      setColunaAlvo(colunaId);
+    }
+  };
+
+  // 4. Quando o rato sai de cima de uma coluna
+  const handleDragLeave = (e) => {
+    setColunaAlvo(null);
+  };
+
+  // 5. Ação de largar o cartão na nova coluna
+  const handleDrop = (e, colunaDestinoId) => {
+    e.preventDefault();
+    setColunaAlvo(null);
+
+    const chamadoId = e.dataTransfer.getData('chamadoId');
+    const colunaOrigemId = e.dataTransfer.getData('colunaOrigemId');
+
+    // Se largar na mesma coluna onde estava, não faz nada
+    if (colunaOrigemId === colunaDestinoId) return;
+
+    // Atualizamos o estado movendo o cartão da origem para o destino
+    setColunas(prevColunas => {
+      const colunaOrigem = prevColunas[colunaOrigemId];
+      const colunaDestino = prevColunas[colunaDestinoId];
+
+      // Encontrar o cartão arrastado
+      const cartaoArrastado = colunaOrigem.chamados.find(c => c.id === chamadoId);
+      
+      // Remover o cartão da coluna de origem
+      const novosChamadosOrigem = colunaOrigem.chamados.filter(c => c.id !== chamadoId);
+      
+      // Adicionar o cartão à coluna de destino
+      const novosChamadosDestino = [...colunaDestino.chamados, cartaoArrastado];
+
+      return {
+        ...prevColunas,
+        [colunaOrigemId]: { ...colunaOrigem, chamados: novosChamadosOrigem },
+        [colunaDestinoId]: { ...colunaDestino, chamados: novosChamadosDestino }
+      };
+    });
+  };
+
   return (
     <div className="p-8 h-full">
       <div className="flex gap-6 h-full min-h-[70vh] overflow-x-auto pb-4">
         
-        {colunas.map((coluna) => (
-          <div key={coluna.id} className={`flex-shrink-0 w-80 flex flex-col rounded-xl border border-slate-200 ${coluna.bgCor}`}>
+        {/* Usamos Object.values para percorrer o nosso objeto de colunas */}
+        {Object.values(colunas).map((coluna) => (
+          <div 
+            key={coluna.id} 
+            className={`flex-shrink-0 w-80 flex flex-col rounded-xl border-2 transition-colors duration-200 ${
+              colunaAlvo === coluna.id 
+                ? 'border-blue-400 bg-blue-50/50' // Realce visual quando arrastamos por cima
+                : `border-slate-200 ${coluna.bgCor}`
+            }`}
+            onDragOver={(e) => handleDragOver(e, coluna.id)}
+            onDragLeave={handleDragLeave}
+            onDrop={(e) => handleDrop(e, coluna.id)}
+          >
             
             {/* Cabeçalho da Coluna */}
             <div className={`p-4 border-t-4 rounded-t-xl ${coluna.corHeader} flex items-center justify-between border-b border-slate-200 bg-white`}>
@@ -67,12 +145,15 @@ export default function Kanban() {
               </button>
             </div>
 
-            {/* Lista de Cartões (Drag & Drop visual) */}
-            <div className="p-3 flex-1 overflow-y-auto space-y-3">
+            {/* Lista de Cartões */}
+            <div className="p-3 flex-1 overflow-y-auto space-y-3 min-h-[150px]">
               {coluna.chamados.map((chamado) => (
                 <div 
-                  key={chamado.id} 
-                  className="bg-white p-4 rounded-lg shadow-sm border border-slate-200 hover:shadow-md cursor-grab transition-all group"
+                  key={chamado.id}
+                  draggable="true" // Permite arrastar o elemento HTML
+                  onDragStart={(e) => handleDragStart(e, chamado.id, coluna.id)}
+                  onDragEnd={handleDragEnd}
+                  className="bg-white p-4 rounded-lg shadow-sm border border-slate-200 hover:shadow-md cursor-grab active:cursor-grabbing transition-shadow"
                 >
                   <div className="flex justify-between items-start mb-3">
                     <span className="text-xs font-bold text-slate-400">{chamado.id}</span>
@@ -91,13 +172,13 @@ export default function Kanban() {
                     </div>
                     <div className="flex items-center gap-3">
                       {chamado.comentarios > 0 && (
-                        <div className="flex items-center gap-1 hover:text-blue-600 transition-colors">
+                        <div className="flex items-center gap-1 hover:text-blue-600 transition-colors cursor-pointer">
                           <MessageSquare size={14} />
                           <span>{chamado.comentarios}</span>
                         </div>
                       )}
                       {chamado.anexos > 0 && (
-                        <div className="flex items-center gap-1 hover:text-blue-600 transition-colors">
+                        <div className="flex items-center gap-1 hover:text-blue-600 transition-colors cursor-pointer">
                           <Paperclip size={14} />
                           <span>{chamado.anexos}</span>
                         </div>
