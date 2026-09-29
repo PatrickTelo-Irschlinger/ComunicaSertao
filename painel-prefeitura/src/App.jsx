@@ -9,11 +9,22 @@ import Cidadaos from './components/Cidadaos';
 import Kanban from './components/Kanban';
 import Secretarias from './components/Secretarias';
 import Configuracoes from './components/Configuracoes';
-import HistoricoNotificacoes from './components/HistoricoNotificacoes'; // Importação do novo ecrã
+import HistoricoNotificacoes from './components/HistoricoNotificacoes';
+import Login from './components/Login'; // <--- Importamos o Login
 
 export default function App() {
+  // Estado que controla se o utilizador já fez login
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  
+  // Estado que controla qual página está visível (só importa após o login)
   const [activePage, setActivePage] = useState('dashboard');
 
+  // Se o utilizador não estiver autenticado, mostramos APENAS a tela de Login
+  if (!isAuthenticated) {
+    return <Login onLogin={() => setIsAuthenticated(true)} />;
+  }
+
+  // Se estiver autenticado, continua a renderizar o painel administrativo normalmente
   const getHeaderInfo = () => {
     switch(activePage) {
       case 'dashboard': 
@@ -32,7 +43,7 @@ export default function App() {
         return { title: 'Secretarias e Departamentos', subtitle: 'Gestão das entidades responsáveis pelo atendimento' };
       case 'configuracoes': 
         return { title: 'Configurações do Sistema', subtitle: 'Parâmetros globais, APIs e integrações externas' };
-      case 'historico_notificacoes': // Novo título adicionado
+      case 'historico_notificacoes':
         return { title: 'Central de Notificações', subtitle: 'Registo completo de todos os eventos e alertas do sistema' };
       default: 
         return { title: 'Prefeitura Municipal', subtitle: 'Sertão Integrado' };
@@ -48,7 +59,6 @@ export default function App() {
 
       <main className="flex-1 flex flex-col overflow-y-auto">
         
-        {/* Passamos o evento onViewAllNotifs para o Header */}
         <Header 
           title={title} 
           subtitle={subtitle} 
