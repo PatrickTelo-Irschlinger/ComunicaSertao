@@ -12,11 +12,14 @@ import Configuracoes from './components/Configuracoes';
 import HistoricoNotificacoes from './components/HistoricoNotificacoes';
 import Login from './components/Login';
 import Cadastro from './components/Cadastro'; 
+import EsqueceuSenha from './components/EsqueceuSenha'; // IMPORTAÇÃO DO NOVO ECRÃ
 import ChamadoDetalhes from './components/ChamadoDetalhes';
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [authView, setAuthView] = useState('login'); // Esta variável controla se mostra o login ou o cadastro
+  
+  // Agora pode ser: 'login', 'cadastro' ou 'esqueceu'
+  const [authView, setAuthView] = useState('login'); 
   
   const [activePage, setActivePage] = useState('dashboard');
   const [selectedChamado, setSelectedChamado] = useState(null);
@@ -30,12 +33,19 @@ export default function App() {
         <Login 
           onLogin={() => setIsAuthenticated(true)} 
           onGoToCadastro={() => setAuthView('cadastro')} 
+          onGoToEsqueceuSenha={() => setAuthView('esqueceu')} 
         />
       );
-    } else {
+    } else if (authView === 'cadastro') {
       return (
         <Cadastro 
           onLogin={() => setIsAuthenticated(true)} 
+          onGoToLogin={() => setAuthView('login')} 
+        />
+      );
+    } else if (authView === 'esqueceu') {
+      return (
+        <EsqueceuSenha 
           onGoToLogin={() => setAuthView('login')} 
         />
       );

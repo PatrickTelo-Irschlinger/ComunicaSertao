@@ -7,7 +7,7 @@ export default function Cadastro({ onLogin, onGoToLogin }) {
   
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
-  const [matricula, setMatricula] = useState(''); // Novo estado para a matrícula
+  const [matricula, setMatricula] = useState(''); 
   const [senha, setSenha] = useState('');
   const [confirmarSenha, setConfirmarSenha] = useState('');
   const [erro, setErro] = useState('');
@@ -16,26 +16,22 @@ export default function Cadastro({ onLogin, onGoToLogin }) {
     e.preventDefault();
     setErro('');
 
-    // 1. Verifica se todos os campos estão preenchidos
     if (!nome || !email || !matricula || !senha || !confirmarSenha) {
       setErro("Por favor, preencha todos os campos obrigatórios.");
       return;
     }
 
-    // 2. SEGURANÇA: Restrição de Domínio Institucional
     const dominioOficial = "@sertao.rs.gov.br";
     if (!email.toLowerCase().endsWith(dominioOficial)) {
       setErro(`Acesso negado. Utilize um e-mail corporativo válido (${dominioOficial}).`);
       return;
     }
 
-    // 3. SEGURANÇA: Validação de Matrícula (simulação)
     if (matricula.length < 4) {
       setErro("Número de matrícula de servidor inválido.");
       return;
     }
 
-    // 4. Validação de segurança da senha
     if (senha.length < 6) {
       setErro("A senha deve ter pelo menos 6 dígitos.");
       return;
@@ -46,7 +42,6 @@ export default function Cadastro({ onLogin, onGoToLogin }) {
       return;
     }
 
-    // Se passar em todas as validações de segurança, simula o registo com sucesso
     onLogin();
   };
 
@@ -77,7 +72,6 @@ export default function Cadastro({ onLogin, onGoToLogin }) {
 
               {/* Matrícula e E-mail lado a lado */}
               <div className="grid grid-cols-2 gap-4">
-                {/* Matrícula do Servidor */}
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">Nº de Matrícula</label>
                   <input 
@@ -90,7 +84,6 @@ export default function Cadastro({ onLogin, onGoToLogin }) {
                   />
                 </div>
 
-                {/* E-mail Institucional */}
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">E-mail Institucional</label>
                   <input 
@@ -162,7 +155,7 @@ export default function Cadastro({ onLogin, onGoToLogin }) {
 
               <div className="text-center mt-6">
                 <p className="text-sm text-slate-500 font-medium">
-                  Já é um servidor registado? <button type="button" onClick={onGoToLogin} className="text-[#4b5e28] font-semibold hover:underline cursor-pointer">Aceder ao Painel</button>
+                  Já é um servidor registrado? <button type="button" onClick={onGoToLogin} className="text-[#4b5e28] font-semibold hover:underline cursor-pointer">Voltar ao Painel</button>
                 </p>
               </div>
 

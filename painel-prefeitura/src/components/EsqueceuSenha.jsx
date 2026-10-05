@@ -1,152 +1,98 @@
 import React, { useState } from 'react';
-import { EyeOff, Eye, AlertCircle, ShieldCheck } from 'lucide-react';
+import { AlertCircle, ShieldCheck, ArrowLeft, CheckCircle2 } from 'lucide-react';
 
-export default function Login({ onLogin, onGoToCadastro, onGoToEsqueceuSenha }) {
-  const [mostrarSenha, setMostrarSenha] = useState(false);
+export default function EsqueceuSenha({ onGoToLogin }) {
   const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
   const [erro, setErro] = useState(''); 
+  const [enviado, setEnviado] = useState(false);
 
-  // Lógica de Autocompletar E-mail
-  const dominioOficial = "@sertao.rs.gov.br";
-  let sugestaoEmail = "";
-
-  if (email.length > 0 && !email.endsWith(dominioOficial)) {
-    if (!email.includes("@")) {
-      sugestaoEmail = dominioOficial;
-    } else {
-      const partes = email.split("@");
-      const dominioDigitado = partes[1];
-      const dominioEsperado = "sertao.rs.gov.br";
-      if (dominioEsperado.startsWith(dominioDigitado)) {
-        sugestaoEmail = dominioEsperado.substring(dominioDigitado.length);
-      }
-    }
-  }
-
-  const handleKeyDown = (e) => {
-    if ((e.key === 'Tab' || e.key === 'ArrowRight') && sugestaoEmail) {
-      e.preventDefault();
-      setEmail(email + sugestaoEmail);
-      if (erro) setErro('');
-    }
-  };
-
-  const handleEntrar = (e) => {
+  const handleRecuperar = (e) => {
     e.preventDefault();
     setErro('');
 
-    if (!email || !senha) {
-      setErro("Por favor, preencha o e-mail e a senha para entrar.");
-      return;
-    }
-    if (!email.toLowerCase().endsWith(dominioOficial)) {
-      setErro(`Acesso restrito a servidores. Utilize seu e-mail corporativo (${dominioOficial}).`);
-      return;
-    }
-    if (senha.length < 6) {
-      setErro("Credenciais inválidas. Verifique o seu e-mail corporativo e senha.");
+    if (!email) {
+      setErro("Por favor, preencha o seu e-mail institucional.");
       return;
     }
 
-    onLogin();
+    const dominioOficial = "@sertao.rs.gov.br";
+    if (!email.toLowerCase().endsWith(dominioOficial)) {
+      setErro(`Por segurança, a recuperação só é permitida para e-mails corporativos (${dominioOficial}).`);
+      return;
+    }
+
+    // Simula o envio do e-mail de recuperação
+    setEnviado(true);
   };
 
   return (
     <div className="flex min-h-screen bg-white font-sans">
+      {/* Lado Esquerdo - Formulário */}
       <div className="w-full lg:w-1/2 flex flex-col relative px-8 sm:px-16 lg:px-24 xl:px-32 z-10 bg-white">
         <div className="flex-1 flex flex-col justify-center py-12">
           
           <div className="max-w-md w-full mx-auto">
+            <button 
+              onClick={onGoToLogin}
+              className="flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-800 transition-colors mb-8 w-fit"
+            >
+              <ArrowLeft size={16} /> Voltar para o Login
+            </button>
+
             <div className="flex items-center gap-2 mb-2 text-slate-500">
               <ShieldCheck size={18} className="text-[#4b5e28]" />
-              <p className="text-sm font-medium">Painel do Servidor</p>
+              <p className="text-sm font-medium">Recuperação Segura</p>
             </div>
             
-            <h1 className="text-4xl font-bold text-slate-900 tracking-tight mb-10">Acesse sua conta</h1>
+            <h1 className="text-4xl font-bold text-slate-900 tracking-tight mb-3">Esqueceu a senha?</h1>
+            <p className="text-slate-500 mb-8 text-sm">
+              Não se preocupe! Digite o seu e-mail institucional abaixo e enviaremos as instruções para redefinir a sua senha.
+            </p>
 
-            <form onSubmit={handleEntrar} className="space-y-6">
-              
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">E-mail Institucional</label>
-                <div className={`relative w-full bg-white border ${erro && !email ? 'border-red-500' : 'border-slate-300'} rounded-lg focus-within:ring-2 focus-within:ring-[#4b5e28] focus-within:border-transparent transition-all overflow-hidden`}>
-                  <div className="absolute inset-0 px-4 py-3 text-sm pointer-events-none flex items-center whitespace-nowrap overflow-hidden">
-                    <span className="text-transparent">{email}</span>
-                    {sugestaoEmail && (
-                      <span className="text-slate-400 flex items-center">
-                        {sugestaoEmail}
-                        <span className="ml-2 text-[9px] font-bold uppercase tracking-wider bg-slate-100 border border-slate-200 text-slate-500 px-1.5 py-0.5 rounded shadow-sm">Tab</span>
-                      </span>
-                    )}
-                  </div>
+            {!enviado ? (
+              <form onSubmit={handleRecuperar} className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">E-mail Institucional</label>
                   <input 
-                    type="text" 
+                    type="email" 
                     value={email}
                     onChange={(e) => { setEmail(e.target.value.replace(/\s/g, '')); if (erro) setErro(''); }}
-                    onKeyDown={handleKeyDown}
-                    autoComplete="off"
                     placeholder="servidor@sertao.rs.gov.br" 
-                    className="w-full px-4 py-3 bg-transparent text-sm focus:outline-none relative z-10 text-slate-900 placeholder:text-slate-400"
+                    className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#4b5e28] focus:border-transparent transition-all placeholder:text-slate-400"
+                    required
                   />
                 </div>
-              </div>
 
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Senha</label>
-                <div className="relative">
-                  <input 
-                    type={mostrarSenha ? "text" : "password"} 
-                    value={senha}
-                    onChange={(e) => { setSenha(e.target.value); if (erro) setErro(''); }}
-                    placeholder="Digite sua senha" 
-                    className={`w-full px-4 py-3 bg-white border ${erro ? 'border-red-500 focus:ring-red-500' : 'border-slate-300 focus:ring-[#4b5e28]'} rounded-lg text-sm focus:outline-none focus:ring-2 focus:border-transparent transition-all placeholder:text-slate-400 pr-12`}
-                  />
-                  <button 
-                    type="button"
-                    onClick={() => setMostrarSenha(!mostrarSenha)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors p-1"
-                  >
-                    {mostrarSenha ? <Eye size={20} /> : <EyeOff size={20} />}
-                  </button>
-                </div>
-              </div>
+                {erro && (
+                   <p className="text-sm text-red-500 font-medium flex items-center gap-2 bg-red-50 p-3 rounded-lg border border-red-100">
+                      <AlertCircle size={18} className="shrink-0" /> <span>{erro}</span>
+                   </p>
+                )}
 
-              {erro && (
-                 <p className="text-sm text-red-500 font-medium flex items-center gap-2 bg-red-50 p-3 rounded-lg border border-red-100">
-                    <AlertCircle size={18} className="shrink-0" /> <span>{erro}</span>
-                 </p>
-              )}
-
-              <div className="flex items-center justify-between pt-2">
-                <label className="flex items-center gap-2 cursor-pointer group">
-                  <input type="checkbox" className="w-4 h-4 rounded border-slate-300 text-[#4b5e28] focus:ring-[#4b5e28] accent-[#4b5e28] cursor-pointer" />
-                  <span className="text-sm font-medium text-slate-600 group-hover:text-slate-800 transition-colors">Manter conectado</span>
-                </label>
-                
-                {/* BOTÃO ESQUECEU A SENHA */}
                 <button 
-                  type="button" 
-                  onClick={onGoToEsqueceuSenha}
-                  className="text-sm font-semibold text-[#4b5e28] hover:text-[#3a4920] hover:underline transition-colors"
+                  type="submit"
+                  className="w-full py-3.5 px-4 bg-[#4b5e28] hover:bg-[#3a4920] text-white font-medium rounded-lg transition-all shadow-[0_8px_20px_rgba(75,94,40,0.25)] hover:shadow-[0_4px_12px_rgba(75,94,40,0.2)] mt-4"
                 >
-                  Esqueceu a senha?
+                  Enviar link de recuperação
+                </button>
+              </form>
+            ) : (
+              <div className="bg-[#4b5e28]/5 border border-[#4b5e28]/20 rounded-xl p-6 text-center animate-in fade-in zoom-in-95 duration-300">
+                <div className="w-16 h-16 bg-[#4b5e28]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <CheckCircle2 size={32} className="text-[#4b5e28]" />
+                </div>
+                <h3 className="text-lg font-bold text-slate-800 mb-2">E-mail enviado!</h3>
+                <p className="text-sm text-slate-600 mb-6">
+                  Se o e-mail <b>{email}</b> estiver registado no nosso sistema, receberá um link para criar uma nova senha em poucos minutos.
+                </p>
+                <button 
+                  onClick={onGoToLogin}
+                  className="w-full py-3 px-4 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-medium rounded-lg transition-all shadow-sm"
+                >
+                  Voltar para o Login
                 </button>
               </div>
-
-              <button 
-                type="submit"
-                className="w-full py-3.5 px-4 bg-[#4b5e28] hover:bg-[#3a4920] text-white font-medium rounded-lg transition-all shadow-[0_8px_20px_rgba(75,94,40,0.25)] hover:shadow-[0_4px_12px_rgba(75,94,40,0.2)] mt-4"
-              >
-                Entrar no Painel
-              </button>
-
-              <div className="text-center mt-6 pt-6 border-t border-slate-100">
-                <p className="text-sm text-slate-500 font-medium">
-                  É um novo servidor? <button type="button" onClick={onGoToCadastro} className="text-[#4b5e28] font-semibold hover:underline cursor-pointer">Solicitar Acesso</button>
-                </p>
-              </div>
-
-            </form>
+            )}
           </div>
         </div>
 
@@ -155,7 +101,7 @@ export default function Login({ onLogin, onGoToCadastro, onGoToEsqueceuSenha }) 
         </div>
       </div>
 
-      {/* Lado Direito - Ilustração idêntica omitida por brevidade visual, mas incluída na estrutura base acima */}
+      {/* Lado Direito - Ilustração (Mesma identidade visual) */}
       <div className="hidden lg:flex w-1/2 bg-[#16161b] relative overflow-hidden items-center justify-center p-12">
         <div className="absolute -top-[350px] -right-[350px] w-[800px] h-[800px] rounded-full border border-white/[0.03] pointer-events-none"></div>
         <div className="absolute -top-[450px] -right-[450px] w-[1100px] h-[1100px] rounded-full border border-white/[0.03] pointer-events-none"></div>
