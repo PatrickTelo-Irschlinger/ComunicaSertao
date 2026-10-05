@@ -11,18 +11,40 @@ import Secretarias from './components/Secretarias';
 import Configuracoes from './components/Configuracoes';
 import HistoricoNotificacoes from './components/HistoricoNotificacoes';
 import Login from './components/Login';
+import Cadastro from './components/Cadastro'; 
 import ChamadoDetalhes from './components/ChamadoDetalhes';
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authView, setAuthView] = useState('login'); // Esta variável controla se mostra o login ou o cadastro
+  
   const [activePage, setActivePage] = useState('dashboard');
   const [selectedChamado, setSelectedChamado] = useState(null);
-  const [paginaOrigem, setPaginaOrigem] = useState('kanban'); // NOVO: Memória de origem
 
+  // ==========================================
+  // GESTÃO DAS TELAS DE AUTENTICAÇÃO
+  // ==========================================
   if (!isAuthenticated) {
-    return <Login onLogin={() => setIsAuthenticated(true)} />;
+    if (authView === 'login') {
+      return (
+        <Login 
+          onLogin={() => setIsAuthenticated(true)} 
+          onGoToCadastro={() => setAuthView('cadastro')} 
+        />
+      );
+    } else {
+      return (
+        <Cadastro 
+          onLogin={() => setIsAuthenticated(true)} 
+          onGoToLogin={() => setAuthView('login')} 
+        />
+      );
+    }
   }
 
+  // ==========================================
+  // GESTÃO DO SISTEMA INTERNO
+  // ==========================================
   const getHeaderInfo = () => {
     switch(activePage) {
       case 'dashboard': return { title: 'Dashboard Administrativo', subtitle: '28 de julho de 2026 — Prefeitura Municipal' };
@@ -53,15 +75,11 @@ export default function App() {
           onViewAllNotifs={() => setActivePage('historico_notificacoes')}
         />
 
-        {/* Passamos o setPaginaOrigem para as 3 telas onde podemos clicar em chamados */}
-        {activePage === 'dashboard' && <Dashboard setActivePage={setActivePage} setSelectedChamado={setSelectedChamado} setPaginaOrigem={setPaginaOrigem} />}
-        {activePage === 'chamados' && <Chamados setActivePage={setActivePage} setSelectedChamado={setSelectedChamado} setPaginaOrigem={setPaginaOrigem} />}
-        {activePage === 'kanban' && <Kanban setActivePage={setActivePage} setSelectedChamado={setSelectedChamado} setPaginaOrigem={setPaginaOrigem} />}
-        
-        {/* Passamos o paginaOrigem para a tela de Detalhes saber para onde voltar */}
-        {activePage === 'detalhes_chamado' && <ChamadoDetalhes chamado={selectedChamado} setActivePage={setActivePage} paginaOrigem={paginaOrigem} />}
-        
+        {activePage === 'dashboard' && <Dashboard setActivePage={setActivePage} setSelectedChamado={setSelectedChamado} />}
+        {activePage === 'chamados' && <Chamados setActivePage={setActivePage} setSelectedChamado={setSelectedChamado} />}
         {activePage === 'novo' && <NovoChamado setActivePage={setActivePage} />}
+        {activePage === 'kanban' && <Kanban setActivePage={setActivePage} setSelectedChamado={setSelectedChamado} />}
+        {activePage === 'detalhes_chamado' && <ChamadoDetalhes chamado={selectedChamado} setActivePage={setActivePage} />}
         {activePage === 'relatorios' && <Relatorios />}
         {activePage === 'cidadaos' && <Cidadaos />}
         {activePage === 'secretarias' && <Secretarias />}
