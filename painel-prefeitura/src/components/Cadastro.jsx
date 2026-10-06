@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { EyeOff, Eye, AlertCircle } from 'lucide-react';
+import { EyeOff, Eye, AlertCircle, CheckCircle2 } from 'lucide-react';
 
 export default function Cadastro({ onLogin, onGoToLogin }) {
   const [mostrarSenha, setMostrarSenha] = useState(false);
@@ -10,7 +10,37 @@ export default function Cadastro({ onLogin, onGoToLogin }) {
   const [matricula, setMatricula] = useState(''); 
   const [senha, setSenha] = useState('');
   const [confirmarSenha, setConfirmarSenha] = useState('');
+  
   const [erro, setErro] = useState('');
+  const [sucesso, setSucesso] = useState(false);
+
+  // =======================================================================
+  // LÓGICA DE AUTOCOMPLETAR E-MAIL INSTITUCIONAL
+  // =======================================================================
+  const dominioOficial = "@sertao.rs.gov.br";
+  let sugestaoEmail = "";
+
+  if (email.length > 0 && !email.endsWith(dominioOficial)) {
+    if (!email.includes("@")) {
+      sugestaoEmail = dominioOficial;
+    } else {
+      const partes = email.split("@");
+      const dominioDigitado = partes[1];
+      const dominioEsperado = "sertao.rs.gov.br";
+      if (dominioEsperado.startsWith(dominioDigitado)) {
+        sugestaoEmail = dominioEsperado.substring(dominioDigitado.length);
+      }
+    }
+  }
+
+  const handleKeyDownEmail = (e) => {
+    if ((e.key === 'Tab' || e.key === 'ArrowRight') && sugestaoEmail) {
+      e.preventDefault();
+      setEmail(email + sugestaoEmail);
+      if (erro) setErro('');
+    }
+  };
+  // =======================================================================
 
   const handleRegisto = (e) => {
     e.preventDefault();
@@ -21,7 +51,6 @@ export default function Cadastro({ onLogin, onGoToLogin }) {
       return;
     }
 
-    const dominioOficial = "@sertao.rs.gov.br";
     if (!email.toLowerCase().endsWith(dominioOficial)) {
       setErro(`Acesso negado. Utilize um e-mail corporativo válido (${dominioOficial}).`);
       return;
@@ -42,7 +71,7 @@ export default function Cadastro({ onLogin, onGoToLogin }) {
       return;
     }
 
-    onLogin();
+    setSucesso(true);
   };
 
   return (
@@ -53,115 +82,150 @@ export default function Cadastro({ onLogin, onGoToLogin }) {
         <div className="flex-1 flex flex-col justify-center py-12">
           
           <div className="max-w-md w-full mx-auto">
-            <p className="text-sm font-medium text-slate-500 mb-2">Uso Exclusivo para Servidores</p>
-            <h1 className="text-4xl font-bold text-slate-900 tracking-tight mb-8">Solicitar Acesso</h1>
+            
+            {!sucesso ? (
+              <>
+                <p className="text-sm font-medium text-slate-500 mb-2">Uso Exclusivo para Servidores</p>
+                <h1 className="text-4xl font-bold text-slate-900 tracking-tight mb-8">Solicitar Acesso</h1>
 
-            <form onSubmit={handleRegisto} className="space-y-5">
-              
-              {/* Nome Completo */}
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Nome Completo</label>
-                <input 
-                  type="text" 
-                  value={nome}
-                  onChange={(e) => { setNome(e.target.value); if (erro) setErro(''); }}
-                  placeholder="Seu nome completo" 
-                  className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#4b5e28] focus:border-transparent transition-all placeholder:text-slate-400"
-                />
-              </div>
+                <form onSubmit={handleRegisto} className="space-y-5">
+                  
+                  {/* Nome Completo */}
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">Nome Completo</label>
+                    <input 
+                      type="text" 
+                      value={nome}
+                      onChange={(e) => { setNome(e.target.value); if (erro) setErro(''); }}
+                      placeholder="Seu nome completo" 
+                      className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#4b5e28] focus:border-transparent transition-all placeholder:text-slate-400"
+                    />
+                  </div>
 
-              {/* Matrícula e E-mail lado a lado */}
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Nº de Matrícula</label>
-                  <input 
-                    type="text" 
-                    value={matricula}
-                    onChange={(e) => { setMatricula(e.target.value.replace(/\D/g, '')); if (erro) setErro(''); }}
-                    placeholder="Ex: 12345" 
-                    maxLength={8}
-                    className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#4b5e28] focus:border-transparent transition-all placeholder:text-slate-400"
-                  />
-                </div>
+                  {/* Matrícula e E-mail lado a lado */}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">Nº de Matrícula</label>
+                      <input 
+                        type="text" 
+                        value={matricula}
+                        onChange={(e) => { setMatricula(e.target.value.replace(/\D/g, '')); if (erro) setErro(''); }}
+                        placeholder="Ex: 12345" 
+                        maxLength={8}
+                        className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#4b5e28] focus:border-transparent transition-all placeholder:text-slate-400"
+                      />
+                    </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">E-mail Institucional</label>
-                  <input 
-                    type="email" 
-                    value={email}
-                    onChange={(e) => { setEmail(e.target.value); if (erro) setErro(''); }}
-                    placeholder="@sertao.rs.gov.br" 
-                    className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#4b5e28] focus:border-transparent transition-all placeholder:text-slate-400"
-                  />
-                </div>
-              </div>
+                    {/* CAMPO DE E-MAIL COM AUTOCOMPLETAR */}
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">E-mail Institucional</label>
+                      <div className={`relative w-full bg-white border ${erro && (!email || !email.includes(dominioOficial)) ? 'border-red-500' : 'border-slate-300'} rounded-lg focus-within:ring-2 focus-within:ring-[#4b5e28] focus-within:border-transparent transition-all overflow-hidden`}>
+                        <div className="absolute inset-0 px-4 py-3 text-sm pointer-events-none flex items-center whitespace-nowrap overflow-hidden">
+                          <span className="text-transparent">{email}</span>
+                          {sugestaoEmail && (
+                            <span className="text-slate-400 flex items-center">
+                              {sugestaoEmail}
+                              <span className="ml-2 text-[9px] font-bold uppercase tracking-wider bg-slate-100 border border-slate-200 text-slate-500 px-1.5 py-0.5 rounded shadow-sm">Tab</span>
+                            </span>
+                          )}
+                        </div>
+                        <input 
+                          type="text" 
+                          value={email}
+                          onChange={(e) => { setEmail(e.target.value.replace(/\s/g, '')); if (erro) setErro(''); }}
+                          onKeyDown={handleKeyDownEmail}
+                          autoComplete="off"
+                          placeholder="@sertao.rs.gov.br" 
+                          className="w-full px-4 py-3 bg-transparent text-sm focus:outline-none relative z-10 text-slate-900 placeholder:text-slate-400"
+                        />
+                      </div>
+                    </div>
+                  </div>
 
-              {/* Senha */}
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Senha de Acesso</label>
-                <div className="relative">
-                  <input 
-                    type={mostrarSenha ? "text" : "password"} 
-                    value={senha}
-                    onChange={(e) => { setSenha(e.target.value); if (erro) setErro(''); }}
-                    placeholder="Mínimo 6 dígitos" 
-                    className={`w-full px-4 py-3 bg-white border ${erro && (senha.length > 0 && senha.length < 6) ? 'border-red-500 focus:ring-red-500' : 'border-slate-300 focus:ring-[#4b5e28]'} rounded-lg text-sm focus:outline-none focus:ring-2 focus:border-transparent transition-all placeholder:text-slate-400 pr-12`}
-                  />
+                  {/* Senha */}
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">Senha de Acesso</label>
+                    <div className="relative">
+                      <input 
+                        type={mostrarSenha ? "text" : "password"} 
+                        value={senha}
+                        onChange={(e) => { setSenha(e.target.value); if (erro) setErro(''); }}
+                        placeholder="Mínimo 6 dígitos" 
+                        className={`w-full px-4 py-3 bg-white border ${erro && (senha.length > 0 && senha.length < 6) ? 'border-red-500 focus:ring-red-500' : 'border-slate-300 focus:ring-[#4b5e28]'} rounded-lg text-sm focus:outline-none focus:ring-2 focus:border-transparent transition-all placeholder:text-slate-400 pr-12`}
+                      />
+                      <button 
+                        type="button"
+                        onClick={() => setMostrarSenha(!mostrarSenha)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors p-1"
+                      >
+                        {mostrarSenha ? <Eye size={20} /> : <EyeOff size={20} />}
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Confirmar Senha */}
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">Confirmar Senha</label>
+                    <div className="relative">
+                      <input 
+                        type={mostrarConfirmarSenha ? "text" : "password"} 
+                        value={confirmarSenha}
+                        onChange={(e) => { setConfirmarSenha(e.target.value); if (erro) setErro(''); }}
+                        placeholder="Repita sua senha" 
+                        className={`w-full px-4 py-3 bg-white border ${erro && senha !== confirmarSenha && confirmarSenha.length > 0 ? 'border-red-500 focus:ring-red-500' : 'border-slate-300 focus:ring-[#4b5e28]'} rounded-lg text-sm focus:outline-none focus:ring-2 focus:border-transparent transition-all placeholder:text-slate-400 pr-12`}
+                      />
+                      <button 
+                        type="button"
+                        onClick={() => setMostrarConfirmarSenha(!mostrarConfirmarSenha)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors p-1"
+                      >
+                        {mostrarConfirmarSenha ? <Eye size={20} /> : <EyeOff size={20} />}
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Mensagem de Erro Geral */}
+                  {erro && (
+                     <p className="text-sm text-red-500 font-medium flex items-center gap-2 bg-red-50 p-3 rounded-lg mt-2 border border-red-100">
+                        <AlertCircle size={18} className="shrink-0" /> <span>{erro}</span>
+                     </p>
+                  )}
+
+                  {/* Botão de Solicitação */}
                   <button 
-                    type="button"
-                    onClick={() => setMostrarSenha(!mostrarSenha)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors p-1"
+                    type="submit"
+                    className="w-full py-3.5 px-4 bg-[#4b5e28] hover:bg-[#3a4920] text-white font-medium rounded-lg transition-all shadow-[0_8px_20px_rgba(75,94,40,0.25)] hover:shadow-[0_4px_12px_rgba(75,94,40,0.2)] mt-6"
                   >
-                    {mostrarSenha ? <Eye size={20} /> : <EyeOff size={20} />}
+                    Solicitar Acesso
                   </button>
+
+                  <div className="text-center mt-6">
+                    <p className="text-sm text-slate-500 font-medium">
+                      Já é um servidor registrado? <button type="button" onClick={onGoToLogin} className="text-[#4b5e28] font-semibold hover:underline cursor-pointer">Voltar ao Painel</button>
+                    </p>
+                  </div>
+                </form>
+              </>
+            ) : (
+              /* Ecrã de Sucesso */
+              <div className="bg-[#4b5e28]/5 border border-[#4b5e28]/20 rounded-xl p-8 text-center animate-in fade-in zoom-in-95 duration-300">
+                <div className="w-20 h-20 bg-[#4b5e28]/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <CheckCircle2 size={40} className="text-[#4b5e28]" />
                 </div>
-              </div>
-
-              {/* Confirmar Senha */}
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Confirmar Senha</label>
-                <div className="relative">
-                  <input 
-                    type={mostrarConfirmarSenha ? "text" : "password"} 
-                    value={confirmarSenha}
-                    onChange={(e) => { setConfirmarSenha(e.target.value); if (erro) setErro(''); }}
-                    placeholder="Repita sua senha" 
-                    className={`w-full px-4 py-3 bg-white border ${erro && senha !== confirmarSenha && confirmarSenha.length > 0 ? 'border-red-500 focus:ring-red-500' : 'border-slate-300 focus:ring-[#4b5e28]'} rounded-lg text-sm focus:outline-none focus:ring-2 focus:border-transparent transition-all placeholder:text-slate-400 pr-12`}
-                  />
-                  <button 
-                    type="button"
-                    onClick={() => setMostrarConfirmarSenha(!mostrarConfirmarSenha)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors p-1"
-                  >
-                    {mostrarConfirmarSenha ? <Eye size={20} /> : <EyeOff size={20} />}
-                  </button>
-                </div>
-              </div>
-
-              {/* Mensagem de Erro Geral */}
-              {erro && (
-                 <p className="text-sm text-red-500 font-medium flex items-center gap-2 bg-red-50 p-3 rounded-lg mt-2 border border-red-100">
-                    <AlertCircle size={18} className="shrink-0" /> <span>{erro}</span>
-                 </p>
-              )}
-
-              {/* Botão de Registo */}
-              <button 
-                type="submit"
-                className="w-full py-3.5 px-4 bg-[#4b5e28] hover:bg-[#3a4920] text-white font-medium rounded-lg transition-all shadow-[0_8px_20px_rgba(75,94,40,0.25)] hover:shadow-[0_4px_12px_rgba(75,94,40,0.2)] mt-6"
-              >
-                Solicitar Registo no Sistema
-              </button>
-
-              <div className="text-center mt-6">
-                <p className="text-sm text-slate-500 font-medium">
-                  Já é um servidor registrado? <button type="button" onClick={onGoToLogin} className="text-[#4b5e28] font-semibold hover:underline cursor-pointer">Voltar ao Painel</button>
+                <h3 className="text-2xl font-bold text-slate-800 mb-3">Solicitação Enviada!</h3>
+                <p className="text-slate-600 mb-8 leading-relaxed">
+                  Os seus dados foram recebidos com sucesso. Por questões de segurança, a sua conta aguarda agora a <b>aprovação do administrador</b> do sistema.
                 </p>
+                <button 
+                  onClick={onGoToLogin}
+                  className="w-full py-3.5 px-4 bg-[#4b5e28] hover:bg-[#3a4920] text-white font-medium rounded-lg transition-all shadow-md"
+                >
+                  Voltar para o Login
+                </button>
               </div>
+            )}
 
-            </form>
           </div>
-
         </div>
 
         <div className="pb-8">
