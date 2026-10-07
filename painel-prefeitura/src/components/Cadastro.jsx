@@ -40,37 +40,46 @@ export default function Cadastro({ onLogin, onGoToLogin }) {
       if (erro) setErro('');
     }
   };
-  // =======================================================================
 
+  // =======================================================================
+  // VALIDAÇÕES DE SEGURANÇA NO REGISTRO
+  // =======================================================================
   const handleRegisto = (e) => {
     e.preventDefault();
     setErro('');
 
+    // 1. Campos vazios
     if (!nome || !email || !matricula || !senha || !confirmarSenha) {
       setErro("Por favor, preencha todos os campos obrigatórios.");
       return;
     }
 
+    // 2. E-mail Institucional
     if (!email.toLowerCase().endsWith(dominioOficial)) {
       setErro(`Acesso negado. Utilize um e-mail corporativo válido (${dominioOficial}).`);
       return;
     }
 
+    // 3. Matrícula
     if (matricula.length < 4) {
       setErro("Número de matrícula de servidor inválido.");
       return;
     }
 
-    if (senha.length < 6) {
-      setErro("A senha deve ter pelo menos 6 dígitos.");
+    // 4. SENHA SEGURA (Mín. 8 chars, 1 Maiúscula, 1 Minúscula, 1 Número)
+    const regexSenhaForte = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    if (!regexSenhaForte.test(senha)) {
+      setErro("A senha deve ter no mínimo 8 caracteres, incluindo maiúsculas, minúsculas e números.");
       return;
     }
 
+    // 5. SENHAS IGUAIS
     if (senha !== confirmarSenha) {
-      setErro("As senhas não coincidem. Tente novamente.");
+      setErro("As senhas não coincidem. Verifique a confirmação.");
       return;
     }
 
+    // Se passar em todas as validações, mostra sucesso!
     setSucesso(true);
   };
 
@@ -116,7 +125,6 @@ export default function Cadastro({ onLogin, onGoToLogin }) {
                       />
                     </div>
 
-                    {/* CAMPO DE E-MAIL COM AUTOCOMPLETAR */}
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-2">E-mail Institucional</label>
                       <div className={`relative w-full bg-white border ${erro && (!email || !email.includes(dominioOficial)) ? 'border-red-500' : 'border-slate-300'} rounded-lg focus-within:ring-2 focus-within:ring-[#4b5e28] focus-within:border-transparent transition-all overflow-hidden`}>
@@ -150,8 +158,8 @@ export default function Cadastro({ onLogin, onGoToLogin }) {
                         type={mostrarSenha ? "text" : "password"} 
                         value={senha}
                         onChange={(e) => { setSenha(e.target.value); if (erro) setErro(''); }}
-                        placeholder="Mínimo 6 dígitos" 
-                        className={`w-full px-4 py-3 bg-white border ${erro && (senha.length > 0 && senha.length < 6) ? 'border-red-500 focus:ring-red-500' : 'border-slate-300 focus:ring-[#4b5e28]'} rounded-lg text-sm focus:outline-none focus:ring-2 focus:border-transparent transition-all placeholder:text-slate-400 pr-12`}
+                        placeholder="Mínimo 8 caracteres" 
+                        className={`w-full px-4 py-3 bg-white border ${erro && senha.length > 0 && !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(senha) ? 'border-red-500 focus:ring-red-500' : 'border-slate-300 focus:ring-[#4b5e28]'} rounded-lg text-sm focus:outline-none focus:ring-2 focus:border-transparent transition-all placeholder:text-slate-400 pr-12`}
                       />
                       <button 
                         type="button"
@@ -161,6 +169,8 @@ export default function Cadastro({ onLogin, onGoToLogin }) {
                         {mostrarSenha ? <Eye size={20} /> : <EyeOff size={20} />}
                       </button>
                     </div>
+                    {/* Dica de Senha Segura */}
+                    <p className="text-[11px] text-slate-500 mt-1.5 ml-1 font-medium">Use 8+ caracteres, com maiúsculas, minúsculas e números.</p>
                   </div>
 
                   {/* Confirmar Senha */}
@@ -172,7 +182,8 @@ export default function Cadastro({ onLogin, onGoToLogin }) {
                         value={confirmarSenha}
                         onChange={(e) => { setConfirmarSenha(e.target.value); if (erro) setErro(''); }}
                         placeholder="Repita sua senha" 
-                        className={`w-full px-4 py-3 bg-white border ${erro && senha !== confirmarSenha && confirmarSenha.length > 0 ? 'border-red-500 focus:ring-red-500' : 'border-slate-300 focus:ring-[#4b5e28]'} rounded-lg text-sm focus:outline-none focus:ring-2 focus:border-transparent transition-all placeholder:text-slate-400 pr-12`}
+                        /* Se o campo tiver texto e for diferente da senha original, fica vermelho na hora! */
+                        className={`w-full px-4 py-3 bg-white border ${confirmarSenha.length > 0 && senha !== confirmarSenha ? 'border-red-500 focus:ring-red-500 bg-red-50' : 'border-slate-300 focus:ring-[#4b5e28]'} rounded-lg text-sm focus:outline-none focus:ring-2 focus:border-transparent transition-all placeholder:text-slate-400 pr-12`}
                       />
                       <button 
                         type="button"
@@ -182,6 +193,9 @@ export default function Cadastro({ onLogin, onGoToLogin }) {
                         {mostrarConfirmarSenha ? <Eye size={20} /> : <EyeOff size={20} />}
                       </button>
                     </div>
+                    {confirmarSenha.length > 0 && senha !== confirmarSenha && (
+                      <p className="text-[11px] text-red-500 mt-1.5 ml-1 font-bold">As senhas não coincidem.</p>
+                    )}
                   </div>
 
                   {/* Mensagem de Erro Geral */}
@@ -233,7 +247,7 @@ export default function Cadastro({ onLogin, onGoToLogin }) {
         </div>
       </div>
 
-      {/* Lado Direito - Ilustração */}
+      {/* Lado Direito - Ilustração (Inalterada) */}
       <div className="hidden lg:flex w-1/2 bg-[#16161b] relative overflow-hidden items-center justify-center p-12">
         <div className="absolute -top-[350px] -right-[350px] w-[800px] h-[800px] rounded-full border border-white/[0.03] pointer-events-none"></div>
         <div className="absolute -top-[450px] -right-[450px] w-[1100px] h-[1100px] rounded-full border border-white/[0.03] pointer-events-none"></div>
@@ -314,8 +328,6 @@ export default function Cadastro({ onLogin, onGoToLogin }) {
             </div>
           </div>
         </div>
-
-        <button title="Ajuda e Suporte" className="absolute bottom-6 right-6 w-8 h-8 flex items-center justify-center rounded-full bg-white/5 border border-white/10 text-slate-400 hover:bg-white/10 hover:text-white transition-all duration-300 text-xs font-semibold z-20 cursor-pointer">?</button>
       </div>
       
     </div>

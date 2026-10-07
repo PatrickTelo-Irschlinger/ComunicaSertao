@@ -6,6 +6,34 @@ export default function EsqueceuSenha({ onGoToLogin }) {
   const [erro, setErro] = useState(''); 
   const [enviado, setEnviado] = useState(false);
 
+  // =======================================================================
+  // LÓGICA DE AUTOCOMPLETAR E-MAIL INSTITUCIONAL
+  // =======================================================================
+  const dominioOficial = "@sertao.rs.gov.br";
+  let sugestaoEmail = "";
+
+  if (email.length > 0 && !email.endsWith(dominioOficial)) {
+    if (!email.includes("@")) {
+      sugestaoEmail = dominioOficial;
+    } else {
+      const partes = email.split("@");
+      const dominioDigitado = partes[1];
+      const dominioEsperado = "sertao.rs.gov.br";
+      if (dominioEsperado.startsWith(dominioDigitado)) {
+        sugestaoEmail = dominioEsperado.substring(dominioDigitado.length);
+      }
+    }
+  }
+
+  const handleKeyDownEmail = (e) => {
+    if ((e.key === 'Tab' || e.key === 'ArrowRight') && sugestaoEmail) {
+      e.preventDefault();
+      setEmail(email + sugestaoEmail);
+      if (erro) setErro('');
+    }
+  };
+  // =======================================================================
+
   const handleRecuperar = (e) => {
     e.preventDefault();
     setErro('');
@@ -15,7 +43,6 @@ export default function EsqueceuSenha({ onGoToLogin }) {
       return;
     }
 
-    const dominioOficial = "@sertao.rs.gov.br";
     if (!email.toLowerCase().endsWith(dominioOficial)) {
       setErro(`Por segurança, a recuperação só é permitida para e-mails corporativos (${dominioOficial}).`);
       return;
@@ -51,16 +78,30 @@ export default function EsqueceuSenha({ onGoToLogin }) {
 
             {!enviado ? (
               <form onSubmit={handleRecuperar} className="space-y-6">
+                
+                {/* CAMPO DE E-MAIL COM AUTOCOMPLETAR */}
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">E-mail Institucional</label>
-                  <input 
-                    type="email" 
-                    value={email}
-                    onChange={(e) => { setEmail(e.target.value.replace(/\s/g, '')); if (erro) setErro(''); }}
-                    placeholder="servidor@sertao.rs.gov.br" 
-                    className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#4b5e28] focus:border-transparent transition-all placeholder:text-slate-400"
-                    required
-                  />
+                  <div className={`relative w-full bg-white border ${erro && (!email || !email.includes(dominioOficial)) ? 'border-red-500' : 'border-slate-300'} rounded-lg focus-within:ring-2 focus-within:ring-[#4b5e28] focus-within:border-transparent transition-all overflow-hidden`}>
+                    <div className="absolute inset-0 px-4 py-3 text-sm pointer-events-none flex items-center whitespace-nowrap overflow-hidden">
+                      <span className="text-transparent">{email}</span>
+                      {sugestaoEmail && (
+                        <span className="text-slate-400 flex items-center">
+                          {sugestaoEmail}
+                          <span className="ml-2 text-[9px] font-bold uppercase tracking-wider bg-slate-100 border border-slate-200 text-slate-500 px-1.5 py-0.5 rounded shadow-sm">Tab</span>
+                        </span>
+                      )}
+                    </div>
+                    <input 
+                      type="text" 
+                      value={email}
+                      onChange={(e) => { setEmail(e.target.value.replace(/\s/g, '')); if (erro) setErro(''); }}
+                      onKeyDown={handleKeyDownEmail}
+                      autoComplete="off"
+                      placeholder="servidor@sertao.rs.gov.br" 
+                      className="w-full px-4 py-3 bg-transparent text-sm focus:outline-none relative z-10 text-slate-900 placeholder:text-slate-400"
+                    />
+                  </div>
                 </div>
 
                 {erro && (
@@ -83,7 +124,7 @@ export default function EsqueceuSenha({ onGoToLogin }) {
                 </div>
                 <h3 className="text-lg font-bold text-slate-800 mb-2">E-mail enviado!</h3>
                 <p className="text-sm text-slate-600 mb-6">
-                  Se o e-mail <b>{email}</b> estiver registado no nosso sistema, receberá um link para criar uma nova senha em poucos minutos.
+                  Se o e-mail <b>{email}</b> estiver registrado no nosso sistema, você receberá um link para criar uma nova senha em poucos minutos.
                 </p>
                 <button 
                   onClick={onGoToLogin}
@@ -101,7 +142,7 @@ export default function EsqueceuSenha({ onGoToLogin }) {
         </div>
       </div>
 
-      {/* Lado Direito - Ilustração (Mesma identidade visual) */}
+      {/* Lado Direito - Ilustração */}
       <div className="hidden lg:flex w-1/2 bg-[#16161b] relative overflow-hidden items-center justify-center p-12">
         <div className="absolute -top-[350px] -right-[350px] w-[800px] h-[800px] rounded-full border border-white/[0.03] pointer-events-none"></div>
         <div className="absolute -top-[450px] -right-[450px] w-[1100px] h-[1100px] rounded-full border border-white/[0.03] pointer-events-none"></div>
@@ -166,23 +207,26 @@ export default function EsqueceuSenha({ onGoToLogin }) {
                 </div>
                 
                 <div className="flex items-end justify-between gap-1 h-24">
-                  <div className="w-full bg-[#cbd5e1] rounded-t-sm h-[20%]"></div>
-                  <div className="w-full bg-[#cbd5e1] rounded-t-sm h-[35%]"></div>
-                  <div className="w-full bg-[#cbd5e1] rounded-t-sm h-[25%]"></div>
-                  <div className="w-full bg-[#a3b18a] rounded-t-sm h-[45%]"></div>
-                  <div className="w-full bg-[#a3b18a] rounded-t-sm h-[30%]"></div>
-                  <div className="w-full bg-[#a3b18a] rounded-t-sm h-[60%]"></div>
-                  <div className="w-full bg-[#a3b18a] rounded-t-sm h-[50%]"></div>
-                  <div className="w-full bg-[#4b5e28] rounded-t-sm h-[70%]"></div>
-                  <div className="w-full bg-[#4b5e28] rounded-t-sm h-[85%]"></div>
-                  <div className="w-full bg-[#4b5e28] rounded-t-sm h-[65%]"></div>
+                  <div className="w-full bg-[#cbd5e1] rounded-t-sm h-[20%] transition-all hover:h-[25%]"></div>
+                  <div className="w-full bg-[#cbd5e1] rounded-t-sm h-[35%] transition-all hover:h-[40%]"></div>
+                  <div className="w-full bg-[#cbd5e1] rounded-t-sm h-[25%] transition-all hover:h-[30%]"></div>
+                  <div className="w-full bg-[#a3b18a] rounded-t-sm h-[45%] transition-all hover:h-[50%]"></div>
+                  <div className="w-full bg-[#a3b18a] rounded-t-sm h-[30%] transition-all hover:h-[35%]"></div>
+                  <div className="w-full bg-[#a3b18a] rounded-t-sm h-[60%] transition-all hover:h-[65%]"></div>
+                  <div className="w-full bg-[#a3b18a] rounded-t-sm h-[50%] transition-all hover:h-[55%]"></div>
+                  <div className="w-full bg-[#4b5e28] rounded-t-sm h-[70%] transition-all hover:h-[75%]"></div>
+                  <div className="w-full bg-[#4b5e28] rounded-t-sm h-[85%] transition-all hover:h-[90%]"></div>
+                  <div className="w-full bg-[#4b5e28] rounded-t-sm h-[65%] transition-all hover:h-[70%]"></div>
                   <div className="w-full bg-[#2d3a17] rounded-t-sm h-[100%]"></div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
+        <button title="Ajuda e Suporte" className="absolute bottom-6 right-6 w-8 h-8 flex items-center justify-center rounded-full bg-white/5 border border-white/10 text-slate-400 hover:bg-white/10 hover:text-white transition-all duration-300 text-xs font-semibold z-20 cursor-pointer">?</button>
       </div>
+      
     </div>
   );
 }

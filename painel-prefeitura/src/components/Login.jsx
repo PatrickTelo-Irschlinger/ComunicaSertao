@@ -7,7 +7,9 @@ export default function Login({ onLogin, onGoToCadastro, onGoToEsqueceuSenha }) 
   const [senha, setSenha] = useState('');
   const [erro, setErro] = useState(''); 
 
-  // Lógica de Autocompletar E-mail
+  // =======================================================================
+  // LÓGICA DE AUTOCOMPLETAR E-MAIL INSTITUCIONAL
+  // =======================================================================
   const dominioOficial = "@sertao.rs.gov.br";
   let sugestaoEmail = "";
 
@@ -32,6 +34,9 @@ export default function Login({ onLogin, onGoToCadastro, onGoToEsqueceuSenha }) 
     }
   };
 
+  // =======================================================================
+  // VALIDAÇÕES DE SEGURANÇA NO LOGIN
+  // =======================================================================
   const handleEntrar = (e) => {
     e.preventDefault();
     setErro('');
@@ -40,12 +45,16 @@ export default function Login({ onLogin, onGoToCadastro, onGoToEsqueceuSenha }) 
       setErro("Por favor, preencha o e-mail e a senha para entrar.");
       return;
     }
+
     if (!email.toLowerCase().endsWith(dominioOficial)) {
-      setErro(`Acesso restrito a servidores. Utilize seu e-mail corporativo (${dominioOficial}).`);
+      setErro(`Acesso restrito a servidores. Utilize o seu e-mail corporativo (${dominioOficial}).`);
       return;
     }
-    if (senha.length < 6) {
-      setErro("Credenciais inválidas. Verifique o seu e-mail corporativo e senha.");
+
+    // Verificação de Senha Forte no Login
+    const regexSenhaForte = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    if (!regexSenhaForte.test(senha)) {
+      setErro("Credenciais inválidas. A senha deve ter no mínimo 8 caracteres, incluindo maiúsculas, minúsculas e números.");
       return;
     }
 
@@ -54,6 +63,8 @@ export default function Login({ onLogin, onGoToCadastro, onGoToEsqueceuSenha }) 
 
   return (
     <div className="flex min-h-screen bg-white font-sans">
+      
+      {/* Lado Esquerdo - Formulário */}
       <div className="w-full lg:w-1/2 flex flex-col relative px-8 sm:px-16 lg:px-24 xl:px-32 z-10 bg-white">
         <div className="flex-1 flex flex-col justify-center py-12">
           
@@ -67,9 +78,10 @@ export default function Login({ onLogin, onGoToCadastro, onGoToEsqueceuSenha }) 
 
             <form onSubmit={handleEntrar} className="space-y-6">
               
+              {/* CAMPO DE E-MAIL COM AUTOCOMPLETAR */}
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">E-mail Institucional</label>
-                <div className={`relative w-full bg-white border ${erro && !email ? 'border-red-500' : 'border-slate-300'} rounded-lg focus-within:ring-2 focus-within:ring-[#4b5e28] focus-within:border-transparent transition-all overflow-hidden`}>
+                <div className={`relative w-full bg-white border ${erro && (!email || !email.includes(dominioOficial)) ? 'border-red-500' : 'border-slate-300'} rounded-lg focus-within:ring-2 focus-within:ring-[#4b5e28] focus-within:border-transparent transition-all overflow-hidden`}>
                   <div className="absolute inset-0 px-4 py-3 text-sm pointer-events-none flex items-center whitespace-nowrap overflow-hidden">
                     <span className="text-transparent">{email}</span>
                     {sugestaoEmail && (
@@ -91,6 +103,7 @@ export default function Login({ onLogin, onGoToCadastro, onGoToEsqueceuSenha }) 
                 </div>
               </div>
 
+              {/* CAMPO DE SENHA COM VALIDAÇÃO FORTE */}
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">Senha</label>
                 <div className="relative">
@@ -99,7 +112,7 @@ export default function Login({ onLogin, onGoToCadastro, onGoToEsqueceuSenha }) 
                     value={senha}
                     onChange={(e) => { setSenha(e.target.value); if (erro) setErro(''); }}
                     placeholder="Digite sua senha" 
-                    className={`w-full px-4 py-3 bg-white border ${erro ? 'border-red-500 focus:ring-red-500' : 'border-slate-300 focus:ring-[#4b5e28]'} rounded-lg text-sm focus:outline-none focus:ring-2 focus:border-transparent transition-all placeholder:text-slate-400 pr-12`}
+                    className={`w-full px-4 py-3 bg-white border ${erro && senha.length > 0 && !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(senha) ? 'border-red-500 focus:ring-red-500' : 'border-slate-300 focus:ring-[#4b5e28]'} rounded-lg text-sm focus:outline-none focus:ring-2 focus:border-transparent transition-all placeholder:text-slate-400 pr-12`}
                   />
                   <button 
                     type="button"
@@ -109,8 +122,11 @@ export default function Login({ onLogin, onGoToCadastro, onGoToEsqueceuSenha }) 
                     {mostrarSenha ? <Eye size={20} /> : <EyeOff size={20} />}
                   </button>
                 </div>
+                {/* Dica de Senha Segura (Idêntica à do Cadastro) */}
+                <p className="text-[11px] text-slate-500 mt-1.5 ml-1 font-medium">Mínimo de 8 caracteres (maiúsculas, minúsculas e números).</p>
               </div>
 
+              {/* MENSAGEM DE ERRO GERAL */}
               {erro && (
                  <p className="text-sm text-red-500 font-medium flex items-center gap-2 bg-red-50 p-3 rounded-lg border border-red-100">
                     <AlertCircle size={18} className="shrink-0" /> <span>{erro}</span>
@@ -123,7 +139,6 @@ export default function Login({ onLogin, onGoToCadastro, onGoToEsqueceuSenha }) 
                   <span className="text-sm font-medium text-slate-600 group-hover:text-slate-800 transition-colors">Manter conectado</span>
                 </label>
                 
-                {/* BOTÃO ESQUECEU A SENHA */}
                 <button 
                   type="button" 
                   onClick={onGoToEsqueceuSenha}
@@ -155,7 +170,7 @@ export default function Login({ onLogin, onGoToCadastro, onGoToEsqueceuSenha }) 
         </div>
       </div>
 
-      {/* Lado Direito - Ilustração idêntica omitida por brevidade visual, mas incluída na estrutura base acima */}
+      {/* Lado Direito - Ilustração */}
       <div className="hidden lg:flex w-1/2 bg-[#16161b] relative overflow-hidden items-center justify-center p-12">
         <div className="absolute -top-[350px] -right-[350px] w-[800px] h-[800px] rounded-full border border-white/[0.03] pointer-events-none"></div>
         <div className="absolute -top-[450px] -right-[450px] w-[1100px] h-[1100px] rounded-full border border-white/[0.03] pointer-events-none"></div>
@@ -220,22 +235,24 @@ export default function Login({ onLogin, onGoToCadastro, onGoToEsqueceuSenha }) 
                 </div>
                 
                 <div className="flex items-end justify-between gap-1 h-24">
-                  <div className="w-full bg-[#cbd5e1] rounded-t-sm h-[20%]"></div>
-                  <div className="w-full bg-[#cbd5e1] rounded-t-sm h-[35%]"></div>
-                  <div className="w-full bg-[#cbd5e1] rounded-t-sm h-[25%]"></div>
-                  <div className="w-full bg-[#a3b18a] rounded-t-sm h-[45%]"></div>
-                  <div className="w-full bg-[#a3b18a] rounded-t-sm h-[30%]"></div>
-                  <div className="w-full bg-[#a3b18a] rounded-t-sm h-[60%]"></div>
-                  <div className="w-full bg-[#a3b18a] rounded-t-sm h-[50%]"></div>
-                  <div className="w-full bg-[#4b5e28] rounded-t-sm h-[70%]"></div>
-                  <div className="w-full bg-[#4b5e28] rounded-t-sm h-[85%]"></div>
-                  <div className="w-full bg-[#4b5e28] rounded-t-sm h-[65%]"></div>
+                  <div className="w-full bg-[#cbd5e1] rounded-t-sm h-[20%] transition-all hover:h-[25%]"></div>
+                  <div className="w-full bg-[#cbd5e1] rounded-t-sm h-[35%] transition-all hover:h-[40%]"></div>
+                  <div className="w-full bg-[#cbd5e1] rounded-t-sm h-[25%] transition-all hover:h-[30%]"></div>
+                  <div className="w-full bg-[#a3b18a] rounded-t-sm h-[45%] transition-all hover:h-[50%]"></div>
+                  <div className="w-full bg-[#a3b18a] rounded-t-sm h-[30%] transition-all hover:h-[35%]"></div>
+                  <div className="w-full bg-[#a3b18a] rounded-t-sm h-[60%] transition-all hover:h-[65%]"></div>
+                  <div className="w-full bg-[#a3b18a] rounded-t-sm h-[50%] transition-all hover:h-[55%]"></div>
+                  <div className="w-full bg-[#4b5e28] rounded-t-sm h-[70%] transition-all hover:h-[75%]"></div>
+                  <div className="w-full bg-[#4b5e28] rounded-t-sm h-[85%] transition-all hover:h-[90%]"></div>
+                  <div className="w-full bg-[#4b5e28] rounded-t-sm h-[65%] transition-all hover:h-[70%]"></div>
                   <div className="w-full bg-[#2d3a17] rounded-t-sm h-[100%]"></div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
+        <button title="Ajuda e Suporte" className="absolute bottom-6 right-6 w-8 h-8 flex items-center justify-center rounded-full bg-white/5 border border-white/10 text-slate-400 hover:bg-white/10 hover:text-white transition-all duration-300 text-xs font-semibold z-20 cursor-pointer">?</button>
       </div>
     </div>
   );
