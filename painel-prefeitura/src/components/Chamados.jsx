@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { 
-  Search, 
-  Filter, 
-  Eye, 
-  AlertCircle, 
-  Clock, 
-  Check, 
-  X 
+import {
+  Search,
+  Filter,
+  AlertCircle,
+  Clock,
+  Check,
+  X
 } from 'lucide-react';
 
 export default function Chamados({ chamados = [], setChamados, onSelectChamado }) {
@@ -137,12 +136,17 @@ export default function Chamados({ chamados = [], setChamados, onSelectChamado }
     );
   };
 
+  const abrirDetalhes = (item) => {
+    setMenuAbertoId(null);
+    if (onSelectChamado) onSelectChamado({ ...item, origem: 'chamados' });
+  };
+
   return (
     <div className="p-8 bg-slate-50 min-h-screen space-y-6 relative">
-      
+
       {menuAbertoId !== null && (
-        <div 
-          className="fixed inset-0 z-20" 
+        <div
+          className="fixed inset-0 z-20"
           onClick={() => setMenuAbertoId(null)}
         ></div>
       )}
@@ -218,8 +222,20 @@ export default function Chamados({ chamados = [], setChamados, onSelectChamado }
                 const modificacaoRow = item.ultimaModificacao || `${aberturaRow} às 10:00`;
 
                 return (
-                  <tr key={String(idRow)} className="hover:bg-slate-50/70 transition-colors">
-                    
+                  <tr
+                    key={String(idRow)}
+                    onClick={() => abrirDetalhes(item)}
+                    onKeyDown={(e) => {
+                      if (e.target === e.currentTarget && (e.key === 'Enter' || e.key === ' ')) {
+                        e.preventDefault();
+                        abrirDetalhes(item);
+                      }
+                    }}
+                    tabIndex={0}
+                    title="Clique para ver os detalhes"
+                    className="hover:bg-slate-50/70 transition-colors cursor-pointer focus:outline-none focus-visible:bg-slate-50"
+                  >
+
                     <td className="py-4 px-6 text-center align-middle font-bold text-slate-800 whitespace-nowrap">
                       {idRow}
                     </td>
@@ -250,17 +266,13 @@ export default function Chamados({ chamados = [], setChamados, onSelectChamado }
 
                     <td className="py-4 px-6 text-center align-middle whitespace-nowrap relative">
                       <div className="flex items-center justify-center gap-3">
-                        
-                        <button
-                          type="button"
-                          onClick={() => onSelectChamado && onSelectChamado(item)}
-                          className="p-2 text-slate-400 hover:text-[#4b5e28] hover:bg-slate-100 rounded-lg transition-colors cursor-pointer self-end mb-0.5"
-                          title="Visualizar detalhes"
-                        >
-                          <Eye size={18} />
-                        </button>
 
-                        <div className="flex flex-col items-center justify-center relative">
+                        {/* Seletor de status: não deve abrir os detalhes da linha */}
+                        <div
+                          className="flex flex-col items-center justify-center relative cursor-default"
+                          onClick={(e) => e.stopPropagation()}
+                          onKeyDown={(e) => e.stopPropagation()}
+                        >
                           <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
                             Alterar status
                           </span>
