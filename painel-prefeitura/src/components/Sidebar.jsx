@@ -1,72 +1,78 @@
 import React from 'react';
 import { 
-  LayoutDashboard, FileText, Kanban, 
-  Building, Users, BarChart, Settings, LogOut 
+  LayoutGrid, 
+  FileText, 
+  Columns, 
+  Building2, 
+  BarChart2, 
+  Settings, 
+  LogOut 
 } from 'lucide-react';
 
-export default function Sidebar({ activePage, setActivePage }) {
+export default function Sidebar({ activePage, setActivePage, onLogout }) {
   const menuItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'dashboard', label: 'Dashboard', icon: LayoutGrid },
     { id: 'chamados', label: 'Chamados', icon: FileText },
-    { id: 'kanban', label: 'Fluxo Kanban', icon: Kanban }, 
-    { id: 'secretarias', label: 'Secretarias', icon: Building }, 
-    { id: 'cidadaos', label: 'Cidadãos', icon: Users },
-    { id: 'relatorios', label: 'Relatórios', icon: BarChart }, 
+    { id: 'kanban', label: 'Fluxo Kanban', icon: Columns },
+    { id: 'secretarias', label: 'Secretarias', icon: Building2 },
+    { id: 'relatorios', label: 'Relatórios', icon: BarChart2 },
     { id: 'configuracoes', label: 'Configurações', icon: Settings },
   ];
 
-  const handleLogout = () => {
-    window.location.reload();
-  };
-
   return (
-    <aside className="w-64 bg-[#16161b] text-slate-300 flex flex-col h-full border-r border-[#2a2a35] shadow-xl z-50 relative">
+    <aside className="w-64 shrink-0 bg-[#16161b] text-slate-300 flex flex-col min-h-screen select-none">
       
-      <div className="p-6 border-b border-[#2a2a35]">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-[#4b5e28] rounded-lg shadow-sm flex items-center justify-center">
-            <span className="text-white font-bold text-sm">CS</span>
+      {/* Logótipo Comunica Sertão */}
+      <div className="p-6 flex items-center gap-3 mb-4">
+        <div className="w-9 h-9 rounded-lg bg-[#4b5e28] flex items-center justify-center text-white font-bold text-sm shadow-sm shrink-0">
+          CS
+        </div>
+        <div>
+          <div className="text-base font-bold tracking-tight leading-none">
+            <span className="text-white">Comunica</span>
+            <span className="text-[#6a8738]">Sertão</span>
           </div>
-          <div>
-            <h1 className="text-white font-bold text-lg leading-tight tracking-wide">Comunica<span className="text-[#6a8738]">Sertão</span></h1>
-            <p className="text-[10px] text-slate-400 font-medium uppercase tracking-wider">Painel Gestor</p>
-          </div>
+          <p className="text-[10px] font-bold tracking-widest text-slate-400 uppercase mt-1">
+            Painel Gestor
+          </p>
         </div>
       </div>
-      
-      <nav className="flex-1 px-3 py-6 space-y-1.5 overflow-y-auto">
+
+      {/* Navegação sem Cidadãos */}
+      <nav className="flex-1 px-3 space-y-1">
         {menuItems.map((item) => {
+          const Icon = item.icon;
           const isActive = activePage === item.id;
           return (
             <button
               key={item.id}
-              onClick={() => setActivePage(item.id)}
-              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
-                isActive 
-                  ? 'bg-[#4b5e28] text-white shadow-md' 
-                  : 'text-slate-400 hover:bg-white/10 hover:text-white'
+              type="button"
+              onClick={() => setActivePage && setActivePage(item.id)}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all cursor-pointer ${
+                isActive
+                  ? 'bg-[#4b5e28] text-white font-semibold shadow-sm'
+                  : 'text-slate-400 hover:text-white hover:bg-white/5'
               }`}
             >
-              <item.icon 
-                size={18} 
-                className={isActive ? 'text-white' : 'text-slate-500'} 
-              />
-              {item.label}
+              <Icon size={18} />
+              <span>{item.label}</span>
             </button>
           );
         })}
       </nav>
-      
-      <div className="p-4 border-t border-[#2a2a35] bg-[#16161b]">
-        <button 
-          onClick={handleLogout}
-          className="w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-slate-400 hover:text-white hover:bg-red-500/10 hover:text-red-400 rounded-lg transition-colors group"
+
+      {/* Rodapé - Encerrar Sessão */}
+      <div className="p-4 border-t border-white/5">
+        <button
+          type="button"
+          onClick={onLogout}
+          className="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer"
         >
-          <LogOut size={18} className="group-hover:text-red-400 transition-colors" />
-          Encerrar Sessão
+          <LogOut size={18} />
+          <span>Encerrar Sessão</span>
         </button>
       </div>
-      
+
     </aside>
   );
 }

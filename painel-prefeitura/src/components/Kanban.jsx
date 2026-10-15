@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MessageSquare, Paperclip, Clock } from 'lucide-react';
 
-export default function Kanban({ setActivePage, setSelectedChamado }) {
+export default function Kanban({ onSelectChamado }) {
   const initialCards = {
     pendentes: [
       { id: 'CH-2847', titulo: 'Iluminação Pública', autor: 'Maria Aparecida S.', tempo: 'Hoje', mensagens: 2, anexos: 1, prioridade: 'ALTA' },
@@ -17,7 +17,7 @@ export default function Kanban({ setActivePage, setSelectedChamado }) {
       { id: 'CH-2840', titulo: 'Iluminação Pública', autor: 'Fernando Costa', tempo: 'Concluído há 3 dias', mensagens: 3, anexos: 2, prioridade: 'MÉDIA' },
     ],
     cancelados: [
-       { id: 'CH-2831', titulo: 'Solicitação Duplicada', autor: 'Mário Silva', tempo: 'Cancelado ontem', mensagens: 1, anexos: 0, prioridade: 'BAIXA' }
+      { id: 'CH-2831', titulo: 'Solicitação Duplicada', autor: 'Mário Silva', tempo: 'Cancelado ontem', mensagens: 1, anexos: 0, prioridade: 'BAIXA' }
     ]
   };
 
@@ -41,29 +41,32 @@ export default function Kanban({ setActivePage, setSelectedChamado }) {
     setCards(prevCards => {
       const sourceList = [...prevCards[sourceCol]];
       const targetList = [...prevCards[targetCol]];
-      
+
       const cardIndex = sourceList.findIndex(c => c.id === cardId);
       if (cardIndex === -1) return prevCards;
-      
+
       const [movedCard] = sourceList.splice(cardIndex, 1);
       targetList.push(movedCard);
       return { ...prevCards, [sourceCol]: sourceList, [targetCol]: targetList };
     });
   };
 
+  // Abre os detalhes do chamado clicado.
+  // O App já troca a página para 'chamado-detalhes' dentro de onSelectChamado.
   const handleCardClick = (card, columnKey) => {
     const statusMap = {
       pendentes: 'Pendente',
-      emAndamento: 'Em Andamento',
+      emAndamento: 'Em andamento',
       concluidos: 'Concluído',
       cancelados: 'Cancelado'
     };
-    setSelectedChamado({ ...card, status: statusMap[columnKey], origem: 'kanban' });
-    setActivePage('detalhes_chamado');
+    if (onSelectChamado) {
+      onSelectChamado({ ...card, status: statusMap[columnKey], origem: 'kanban' });
+    }
   };
 
   const renderPriorityBadge = (prioridade) => {
-    switch(prioridade) {
+    switch (prioridade) {
       case 'ALTA': return <span className="px-2 py-0.5 text-[10px] font-bold text-red-700 bg-red-100 rounded">ALTA</span>;
       case 'MÉDIA': return <span className="px-2 py-0.5 text-[10px] font-bold text-yellow-700 bg-yellow-100 rounded">MÉDIA</span>;
       case 'BAIXA': return <span className="px-2 py-0.5 text-[10px] font-bold text-green-700 bg-green-100 rounded">BAIXA</span>;
@@ -71,8 +74,9 @@ export default function Kanban({ setActivePage, setSelectedChamado }) {
     }
   };
 
-  const KanbanCard = ({ card, columnKey }) => (
-    <div 
+  const renderCard = (card, columnKey) => (
+    <div
+      key={card.id}
       draggable
       onDragStart={(e) => handleDragStart(e, card.id, columnKey)}
       onDragEnd={handleDragEnd}
@@ -107,7 +111,7 @@ export default function Kanban({ setActivePage, setSelectedChamado }) {
             </div>
           </div>
           <div className="p-4 flex-1 flex flex-col gap-4 overflow-y-auto" onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, 'pendentes')}>
-            {cards.pendentes.map(card => <KanbanCard key={card.id} card={card} columnKey="pendentes" />)}
+            {cards.pendentes.map(card => renderCard(card, 'pendentes'))}
           </div>
         </div>
         {/* COLUNA 2 */}
@@ -119,7 +123,7 @@ export default function Kanban({ setActivePage, setSelectedChamado }) {
             </div>
           </div>
           <div className="p-4 flex-1 flex flex-col gap-4 overflow-y-auto" onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, 'emAndamento')}>
-            {cards.emAndamento.map(card => <KanbanCard key={card.id} card={card} columnKey="emAndamento" />)}
+            {cards.emAndamento.map(card => renderCard(card, 'emAndamento'))}
           </div>
         </div>
         {/* COLUNA 3 */}
@@ -131,7 +135,7 @@ export default function Kanban({ setActivePage, setSelectedChamado }) {
             </div>
           </div>
           <div className="p-4 flex-1 flex flex-col gap-4 overflow-y-auto" onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, 'concluidos')}>
-            {cards.concluidos.map(card => <KanbanCard key={card.id} card={card} columnKey="concluidos" />)}
+            {cards.concluidos.map(card => renderCard(card, 'concluidos'))}
           </div>
         </div>
         {/* COLUNA 4 */}
@@ -143,7 +147,7 @@ export default function Kanban({ setActivePage, setSelectedChamado }) {
             </div>
           </div>
           <div className="p-4 flex-1 flex flex-col gap-4 overflow-y-auto opacity-75" onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, 'cancelados')}>
-            {cards.cancelados.map(card => <KanbanCard key={card.id} card={card} columnKey="cancelados" />)}
+            {cards.cancelados.map(card => renderCard(card, 'cancelados'))}
           </div>
         </div>
       </div>
