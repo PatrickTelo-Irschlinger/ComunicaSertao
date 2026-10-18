@@ -33,60 +33,35 @@ export default function Relatorios({ chamados = [] }) {
   const handleGerar = (e) => {
     if (e) e.preventDefault();
 
-    // Lógica para gerar os dados reais com base no Filtro de Status
-    // Se o sistema estiver vazio, usamos os dados estáticos que pediu
-    let base = [];
-
     const filtroStatus = status.toLowerCase();
     
-    // Configura os números simulados dependendo do que o utilizador procura
+    // Base realista de dados diários da prefeitura para demonstração fluida
+    let base = [
+      { id: 'iluminacao', nome: 'Iluminação Pública', total: 42, resolvidos: 35, tempo: '3,2 dias' },
+      { id: 'pavimentacao', nome: 'Pavimentação', total: 19, resolvidos: 12, tempo: '5,1 dias' },
+      { id: 'limpeza', nome: 'Limpeza Urbana', total: 14, resolvidos: 11, tempo: '2,4 dias' },
+      { id: 'agua', nome: 'Água e Esgoto', total: 25, resolvidos: 18, tempo: '6,5 dias' },
+      { id: 'poda', nome: 'Poda de Árvores', total: 1, resolvidos: 1, tempo: '1,0 dias' }
+    ];
+
+    // Ajusta dinamicamente a proporção de resolvidos conforme o filtro de status escolhido pelo gestor
     if (filtroStatus === 'pendente') {
-       base = [
-         { id: 'iluminacao', nome: 'Iluminação Pública', total: 27, resolvidos: 0, tempo: '--' },
-         { id: 'pavimentacao', nome: 'Pavimentação', total: 35, resolvidos: 0, tempo: '--' },
-         { id: 'limpeza', nome: 'Limpeza Urbana', total: 7, resolvidos: 0, tempo: '--' },
-         { id: 'agua', nome: 'Água e Esgoto', total: 38, resolvidos: 0, tempo: '--' },
-         { id: 'poda', nome: 'Poda de Árvores', total: 2, resolvidos: 0, tempo: '--' }
-       ];
-    } 
-    else if (filtroStatus === 'em andamento') {
-       base = [
-         { id: 'iluminacao', nome: 'Iluminação Pública', total: 42, resolvidos: 0, tempo: '1,5 dias' },
-         { id: 'pavimentacao', nome: 'Pavimentação', total: 18, resolvidos: 0, tempo: '2,0 dias' },
-         { id: 'limpeza', nome: 'Limpeza Urbana', total: 14, resolvidos: 0, tempo: '1,2 dias' },
-         { id: 'agua', nome: 'Água e Esgoto', total: 25, resolvidos: 0, tempo: '3,1 dias' }
-       ];
-    }
-    else if (filtroStatus === 'concluido' || filtroStatus === 'concluído') {
-       base = [
-         { id: 'iluminacao', nome: 'Iluminação Pública', total: 120, resolvidos: 120, tempo: '3,2 dias' },
-         { id: 'pavimentacao', nome: 'Pavimentação', total: 65, resolvidos: 65, tempo: '5,1 dias' },
-         { id: 'limpeza', nome: 'Limpeza Urbana', total: 106, resolvidos: 106, tempo: '2,4 dias' },
-         { id: 'agua', nome: 'Água e Esgoto', total: 40, resolvidos: 40, tempo: '6,5 dias' }
-       ];
-    }
-    else {
-       // Todos os Status (Soma total estática de tudo para demonstração)
-       base = [
-         { id: 'iluminacao', nome: 'Iluminação Pública', total: 189, resolvidos: 120, tempo: '3,2 dias' },
-         { id: 'pavimentacao', nome: 'Pavimentação', total: 118, resolvidos: 65, tempo: '5,1 dias' },
-         { id: 'limpeza', nome: 'Limpeza Urbana', total: 127, resolvidos: 106, tempo: '2,4 dias' },
-         { id: 'agua', nome: 'Água e Esgoto', total: 103, resolvidos: 40, tempo: '6,5 dias' },
-         { id: 'poda', nome: 'Poda de Árvores', total: 2, resolvidos: 0, tempo: '--' }
-       ];
+       base = base.map(i => ({ ...i, resolvidos: 0, tempo: '--' }));
+    } else if (filtroStatus === 'em andamento') {
+       base = base.map(i => ({ ...i, resolvidos: Math.floor(i.total * 0.4) })); // ex: 40% já resolvidos no decorrer do andamento
+    } else if (filtroStatus === 'concluido' || filtroStatus === 'concluído') {
+       base = base.map(i => ({ ...i, total: i.resolvidos })); // 100% concluídos
     }
 
-    // Sobreposição de chamados REAIS criados no sistema (Se existirem)
+    // Inclusão de chamados reais criados pelo utilizador no painel
     if (Array.isArray(chamados) && chamados.length > 0) {
        chamados.forEach(c => {
            const catLower = String(c.categoria || '').toLowerCase();
            const statusItem = String(c.status || 'pendente').toLowerCase();
            
-           // Se o filtro de status estiver ativo, e este chamado não for desse status, salta.
            if (filtroStatus !== '' && !statusItem.includes(filtroStatus.replace('í', 'i'))) return;
 
            let matchId = 'outros';
-           
            if (catLower.includes('ilumina')) matchId = 'iluminacao';
            else if (catLower.includes('pavimenta')) matchId = 'pavimentacao';
            else if (catLower.includes('limpeza')) matchId = 'limpeza';
@@ -95,7 +70,7 @@ export default function Relatorios({ chamados = [] }) {
 
            let item = base.find(b => b.id === matchId);
            if (!item) {
-               item = { id: matchId, nome: c.categoria || 'Outros', total: 0, resolvidos: 0, tempo: statusItem.includes('pendente') ? '--' : '1,0 dias' };
+               item = { id: matchId, nome: c.categoria || 'Outros', total: 0, resolvidos: 0, tempo: '2,0 dias' };
                base.push(item);
            }
 
@@ -116,7 +91,7 @@ export default function Relatorios({ chamados = [] }) {
     const tChamados = base.reduce((acc, curr) => acc + curr.total, 0);
     const tResolvidos = base.reduce((acc, curr) => acc + curr.resolvidos, 0);
     
-    // Calcula o tempo médio apenas de onde for possível
+    // Cálculo do tempo médio geral
     let totalTempos = 0;
     let qtdValida = 0;
     base.forEach(i => {
@@ -129,7 +104,7 @@ export default function Relatorios({ chamados = [] }) {
         }
     });
     
-    let tempoMedioFinal = '--';
+    let tempoMedioFinal = '~ 3,5 dias';
     if (qtdValida > 0) {
         tempoMedioFinal = `~ ${(totalTempos / qtdValida).toFixed(1).replace('.', ',')} dias`;
     }
@@ -161,9 +136,7 @@ export default function Relatorios({ chamados = [] }) {
       }
     `;
     document.head.appendChild(style);
-    
     window.print();
-    
     setTimeout(() => {
         document.head.removeChild(style);
     }, 500);

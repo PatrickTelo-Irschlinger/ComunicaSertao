@@ -215,7 +215,6 @@ export default function Login({ onLogin, onGoToCadastro, onGoToEsqueceuSenha }) 
 
         </div>
 
-        <button title="Ajuda e Suporte" className="absolute bottom-6 right-6 w-8 h-8 flex items-center justify-center rounded-full bg-white/5 border border-white/10 text-slate-400 hover:bg-white/10 hover:text-white transition-all duration-300 text-xs font-semibold z-20 cursor-pointer">?</button>
       </div>
     </div>
   );
