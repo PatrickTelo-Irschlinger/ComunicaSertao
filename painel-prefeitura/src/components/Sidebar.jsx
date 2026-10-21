@@ -22,15 +22,15 @@ export default function Sidebar({ activePage, setActivePage, onLogout }) {
   return (
     <aside className="w-64 shrink-0 bg-[#16161b] text-slate-300 flex flex-col h-screen sticky top-0 left-0 z-40 select-none shadow-xl border-r border-slate-800">
       
-      {/* Logótipo Comunica Sertão */}
+      {/* Logótipo Comunica Sertão - Quadrado CS em Amarelo */}
       <div className="p-6 flex items-center gap-3 mb-2 shrink-0">
-        <div className="w-9 h-9 rounded-lg bg-[#4b5e28] flex items-center justify-center text-white font-bold text-sm shadow-sm">
+        <div className="w-9 h-9 rounded-lg bg-[#f8e000] flex items-center justify-center text-slate-900 font-bold text-sm shadow-sm">
           CS
         </div>
         <div>
           <div className="text-base font-bold tracking-tight leading-none">
             <span className="text-white">Comunica</span>
-            <span className="text-[#6a8738]">Sertão</span>
+            <span className="text-[#2563eb]">Sertão</span>
           </div>
           <p className="text-[10px] font-bold tracking-widest text-slate-400 uppercase mt-1">
             Painel Gestor
@@ -38,7 +38,7 @@ export default function Sidebar({ activePage, setActivePage, onLogout }) {
         </div>
       </div>
 
-      {/* Navegação sem Cidadãos (Com Scroll interno se o ecrã for muito pequeno) */}
+      {/* Navegação com botão ativo em Azul */}
       <nav className="flex-1 px-3 space-y-1 overflow-y-auto custom-scrollbar">
         {menuItems.map((item) => {
           const Icon = item.icon;
@@ -50,7 +50,7 @@ export default function Sidebar({ activePage, setActivePage, onLogout }) {
               onClick={() => setActivePage && setActivePage(item.id)}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all cursor-pointer ${
                 isActive
-                  ? 'bg-[#4b5e28] text-white font-semibold shadow-sm'
+                  ? 'bg-[#2563eb] text-white font-semibold shadow-sm'
                   : 'text-slate-400 hover:text-white hover:bg-white/5'
               }`}
             >
@@ -61,14 +61,14 @@ export default function Sidebar({ activePage, setActivePage, onLogout }) {
         })}
       </nav>
 
-      {/* Rodapé - Encerrar Sessão (Sempre preso ao fundo) */}
+      {/* Rodapé - Encerrar Sessão */}
       <div className="p-4 border-t border-slate-800 shrink-0 bg-[#16161b]">
         <button
           type="button"
           onClick={onLogout}
           className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer group"
         >
-          <LogOut size={18} className="group-hover:text-red-400 transition-colors" />
+          <LogOut className="group-hover:text-red-400 transition-colors" size={18} />
           <span className="group-hover:text-red-400 transition-colors">Encerrar Sessão</span>
         </button>
       </div>

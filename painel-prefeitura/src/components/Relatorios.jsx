@@ -153,7 +153,7 @@ export default function Relatorios({ chamados = [] }) {
       {/* 1. FILTROS DO RELATÓRIO */}
       <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
         <div className="p-5 border-b border-slate-100 flex items-center gap-2">
-          <Filter size={18} className="text-[#4b5e28]" />
+          <Filter size={18} className="text-[#2563eb]" />
           <h2 className="text-base font-bold text-slate-800">Filtros do Relatório</h2>
         </div>
         
@@ -165,7 +165,7 @@ export default function Relatorios({ chamados = [] }) {
                 type="date" 
                 value={dataInicial}
                 onChange={(e) => setDataInicial(e.target.value)}
-                className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#4b5e28] text-slate-700" 
+                className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#2563eb] text-slate-700" 
               />
             </div>
             <div>
@@ -174,7 +174,7 @@ export default function Relatorios({ chamados = [] }) {
                 type="date" 
                 value={dataFinal}
                 onChange={(e) => setDataFinal(e.target.value)}
-                className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#4b5e28] text-slate-700" 
+                className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#2563eb] text-slate-700" 
               />
             </div>
             <div>
@@ -182,7 +182,7 @@ export default function Relatorios({ chamados = [] }) {
               <select 
                 value={categoria}
                 onChange={(e) => setCategoria(e.target.value)}
-                className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#4b5e28] text-slate-700"
+                className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#2563eb] text-slate-700"
               >
                 <option value="">Todas as Categorias</option>
                 <option value="iluminacao">Iluminação Pública</option>
@@ -197,7 +197,7 @@ export default function Relatorios({ chamados = [] }) {
               <select 
                 value={status}
                 onChange={(e) => setStatus(e.target.value)}
-                className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#4b5e28] text-slate-700"
+                className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#2563eb] text-slate-700"
               >
                 <option value="">Todos os Status</option>
                 <option value="pendente">Pendente</option>
@@ -209,7 +209,7 @@ export default function Relatorios({ chamados = [] }) {
           <div className="flex justify-end">
             <button 
               type="submit"
-              className="flex items-center gap-2 px-5 py-2.5 bg-[#4b5e28] hover:bg-[#3a4920] text-white text-sm font-bold rounded-lg transition-colors cursor-pointer shadow-sm"
+              className="flex items-center gap-2 px-5 py-2.5 bg-[#2563eb] hover:bg-[#1d4ed8] text-white text-sm font-bold rounded-lg transition-colors cursor-pointer shadow-sm"
             >
               <Search size={16} />
               <span>Gerar Pré-visualização</span>
@@ -259,7 +259,7 @@ export default function Relatorios({ chamados = [] }) {
                       <td className="py-4 px-6 font-medium text-slate-600">{periodoExibicao}</td>
                       <td className="py-4 px-6 text-slate-500">{linha.nome}</td>
                       <td className="py-4 px-6 font-bold text-slate-800">{linha.total}</td>
-                      <td className="py-4 px-6 font-bold text-[#4b5e28]">{linha.resolvidos}</td>
+                      <td className="py-4 px-6 font-bold text-[#2563eb]">{linha.resolvidos}</td>
                       <td className="py-4 px-6 text-slate-500">{linha.tempo}</td>
                     </tr>
                   ))
@@ -276,7 +276,7 @@ export default function Relatorios({ chamados = [] }) {
                     <td className="py-4 px-6 font-bold text-slate-800">TOTAL GERAL</td>
                     <td className="py-4 px-6"></td>
                     <td className="py-4 px-6 font-extrabold text-slate-900">{totais.total}</td>
-                    <td className="py-4 px-6 font-extrabold text-[#4b5e28]">{totais.resolvidos}</td>
+                    <td className="py-4 px-6 font-extrabold text-[#2563eb]">{totais.resolvidos}</td>
                     <td className="py-4 px-6 font-bold text-slate-800">{totais.tempoMedio}</td>
                   </tr>
                 )}

@@ -104,7 +104,7 @@ export default function Configuracoes() {
 
   // Componente de Botão Liga/Desliga reutilizável
   const ToggleSwitch = ({ checked, onChange }) => (
-    <button type="button" onClick={onChange} className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${checked ? 'bg-[#4b5e28]' : 'bg-slate-200'}`}>
+    <button type="button" onClick={onChange} className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${checked ? 'bg-[#2563eb]' : 'bg-slate-200'}`}>
       <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${checked ? 'translate-x-5' : 'translate-x-0'}`} />
     </button>
   );
@@ -127,7 +127,7 @@ export default function Configuracoes() {
             <button onClick={() => setAbaAtiva('Notificações')} className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${abaAtiva === 'Notificações' ? 'bg-white border border-slate-200 text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100'}`}>
               <Bell size={18} /> Notificações
             </button>
-            <button onClick={() => setAbaAtiva('Segurança')} className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${abaAtiva === 'Segurança' ? 'bg-white border border-[#4b5e28]/20 text-[#4b5e28] shadow-sm' : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100'}`}>
+            <button onClick={() => setAbaAtiva('Segurança')} className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${abaAtiva === 'Segurança' ? 'bg-white border border-[#2563eb]/20 text-[#2563eb] shadow-sm' : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100'}`}>
               <ShieldCheck size={18} /> Segurança
             </button>
           </div>
@@ -148,7 +148,7 @@ export default function Configuracoes() {
               <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
                 <div className="p-6 border-b border-slate-100 flex items-center gap-6 bg-slate-50/50">
                    <div className="relative">
-                      <div className="w-24 h-24 bg-[#4b5e28]/10 text-[#4b5e28] rounded-full flex items-center justify-center text-3xl font-bold border border-[#4b5e28]/20">
+                      <div className="w-24 h-24 bg-[#2563eb]/10 text-[#2563eb] rounded-full flex items-center justify-center text-3xl font-bold border border-[#2563eb]/20">
                          {perfil.nome.charAt(0)}
                       </div>
                       <button className="absolute bottom-0 right-0 p-2 bg-slate-900 text-white rounded-full hover:bg-slate-800 shadow-sm transition-colors cursor-pointer">
@@ -163,19 +163,19 @@ export default function Configuracoes() {
                 <div className="p-8 grid grid-cols-1 md:grid-cols-2 gap-6">
                    <div>
                      <label className="block text-sm font-medium text-slate-700 mb-2">Nome Completo</label>
-                     <input type="text" value={perfil.nome} onChange={e=>setPerfil({...perfil, nome: e.target.value})} className="w-full px-4 py-3 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-[#4b5e28] focus:outline-none" />
+                     <input type="text" value={perfil.nome} onChange={e=>setPerfil({...perfil, nome: e.target.value})} className="w-full px-4 py-3 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-[#2563eb] focus:outline-none" />
                    </div>
                    <div>
                      <label className="block text-sm font-medium text-slate-700 mb-2">E-mail Institucional</label>
-                     <input type="email" value={perfil.email} onChange={e=>setPerfil({...perfil, email: e.target.value})} className="w-full px-4 py-3 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-[#4b5e28] focus:outline-none" />
+                     <input type="email" value={perfil.email} onChange={e=>setPerfil({...perfil, email: e.target.value})} className="w-full px-4 py-3 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-[#2563eb] focus:outline-none" />
                    </div>
                    <div>
                      <label className="block text-sm font-medium text-slate-700 mb-2">Cargo</label>
-                     <input type="text" value={perfil.cargo} onChange={e=>setPerfil({...perfil, cargo: e.target.value})} className="w-full px-4 py-3 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-[#4b5e28] focus:outline-none" />
+                     <input type="text" value={perfil.cargo} onChange={e=>setPerfil({...perfil, cargo: e.target.value})} className="w-full px-4 py-3 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-[#2563eb] focus:outline-none" />
                    </div>
                    <div>
                      <label className="block text-sm font-medium text-slate-700 mb-2">Departamento / Secretaria</label>
-                     <input type="text" value={perfil.departamento} onChange={e=>setPerfil({...perfil, departamento: e.target.value})} className="w-full px-4 py-3 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-[#4b5e28] focus:outline-none" />
+                     <input type="text" value={perfil.departamento} onChange={e=>setPerfil({...perfil, departamento: e.target.value})} className="w-full px-4 py-3 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-[#2563eb] focus:outline-none" />
                    </div>
                 </div>
               </div>
@@ -196,7 +196,7 @@ export default function Configuracoes() {
                         type={mostrarSenhas.atual ? "text" : "password"} 
                         value={senhas.atual} 
                         onChange={e=>setSenhas({...senhas, atual: e.target.value})} 
-                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-[#4b5e28] focus:outline-none pr-10" 
+                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-[#2563eb] focus:outline-none pr-10" 
                         placeholder="••••••••"
                       />
                       <button type="button" onClick={() => setMostrarSenhas({...mostrarSenhas, atual: !mostrarSenhas.atual})} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
@@ -213,7 +213,7 @@ export default function Configuracoes() {
                         type={mostrarSenhas.nova ? "text" : "password"} 
                         value={senhas.nova} 
                         onChange={e=>setSenhas({...senhas, nova: e.target.value})} 
-                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-[#4b5e28] focus:outline-none pr-10" 
+                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-[#2563eb] focus:outline-none pr-10" 
                         placeholder="Nova senha forte"
                       />
                       <button type="button" onClick={() => setMostrarSenhas({...mostrarSenhas, nova: !mostrarSenhas.nova})} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
@@ -230,7 +230,7 @@ export default function Configuracoes() {
                         type={mostrarSenhas.confirmacao ? "text" : "password"} 
                         value={senhas.confirmacao} 
                         onChange={e=>setSenhas({...senhas, confirmacao: e.target.value})} 
-                        className={`w-full px-4 py-3 bg-white border rounded-lg text-sm focus:outline-none pr-10 ${senhas.confirmacao && senhas.nova !== senhas.confirmacao ? 'border-red-500 focus:ring-red-500 bg-red-50' : 'border-slate-200 focus:ring-2 focus:ring-[#4b5e28]'}`} 
+                        className={`w-full px-4 py-3 bg-white border rounded-lg text-sm focus:outline-none pr-10 ${senhas.confirmacao && senhas.nova !== senhas.confirmacao ? 'border-red-500 focus:ring-red-500 bg-red-50' : 'border-slate-200 focus:ring-2 focus:ring-[#2563eb]'}`} 
                         placeholder="Repita a nova senha"
                       />
                       <button type="button" onClick={() => setMostrarSenhas({...mostrarSenhas, confirmacao: !mostrarSenhas.confirmacao})} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
@@ -275,7 +275,7 @@ export default function Configuracoes() {
 
               <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden p-6">
                  <div className="flex items-center gap-4 mb-6">
-                    <div className="w-12 h-12 bg-[#4b5e28]/10 text-[#4b5e28] rounded-xl flex items-center justify-center shrink-0"><Key size={24}/></div>
+                    <div className="w-12 h-12 bg-[#2563eb]/10 text-[#2563eb] rounded-xl flex items-center justify-center shrink-0"><Key size={24}/></div>
                     <div>
                        <h3 className="font-bold text-slate-800">Chave de API (REST Token)</h3>
                        <p className="text-sm text-slate-500">Token de segurança para integrações de sistemas externos da Prefeitura.</p>
@@ -348,7 +348,7 @@ export default function Configuracoes() {
                     <p className="text-sm text-slate-500 leading-relaxed mb-3">
                       Aumente a segurança da sua conta exigindo um código gerado no seu telemóvel em cada início de sessão.
                     </p>
-                    <button className="text-sm font-semibold text-[#4b5e28] hover:underline">Configurar aplicação de autenticação &rarr;</button>
+                    <button className="text-sm font-semibold text-[#2563eb] hover:underline">Configurar aplicação de autenticação &rarr;</button>
                   </div>
                   <ToggleSwitch checked={doisFatores} onChange={() => setDoisFatores(!doisFatores)} />
                 </div>
@@ -462,10 +462,10 @@ export default function Configuracoes() {
         <button 
           onClick={handleSalvarAlteracoes}
           disabled={salvando}
-          className={`flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-bold transition-all shadow-[0_4px_12px_rgba(75,94,40,0.2)] ${
+          className={`flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-bold transition-all shadow-[0_4px_12px_rgba(37,99,235,0.2)] ${
             salvando 
               ? 'bg-slate-400 text-white cursor-not-allowed' 
-              : 'bg-[#4b5e28] hover:bg-[#3a4920] text-white hover:shadow-lg'
+              : 'bg-[#2563eb] hover:bg-[#1d4ed8] text-white hover:shadow-lg'
           }`}
         >
           {salvando ? (

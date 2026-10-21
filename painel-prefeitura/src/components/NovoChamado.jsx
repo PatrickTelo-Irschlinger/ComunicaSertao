@@ -111,7 +111,7 @@ export default function NovoChamado({ setActivePage }) {
                   value={nome}
                   onChange={(e) => { setNome(e.target.value); if(erro) setErro(''); }}
                   placeholder="Nome completo" 
-                  className={`w-full px-4 py-3 bg-white border ${erro && !nome ? 'border-red-500' : 'border-slate-200'} rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#4b5e28] placeholder:text-slate-400`} 
+                  className={`w-full px-4 py-3 bg-white border ${erro && !nome ? 'border-red-500' : 'border-slate-200'} rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#2563eb] placeholder:text-slate-400`} 
                 />
               </div>
               <div>
@@ -123,7 +123,7 @@ export default function NovoChamado({ setActivePage }) {
                   value={contato}
                   onChange={(e) => { setContato(e.target.value); if(erro) setErro(''); }}
                   placeholder="(00) 00000-0000" 
-                  className={`w-full px-4 py-3 bg-white border ${erro && !contato ? 'border-red-500' : 'border-slate-200'} rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#4b5e28] placeholder:text-slate-400`} 
+                  className={`w-full px-4 py-3 bg-white border ${erro && !contato ? 'border-red-500' : 'border-slate-200'} rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#2563eb] placeholder:text-slate-400`} 
                 />
               </div>
             </div>
@@ -137,7 +137,7 @@ export default function NovoChamado({ setActivePage }) {
                 <select 
                   value={categoria}
                   onChange={(e) => { setCategoria(e.target.value); if(erro) setErro(''); }}
-                  className={`w-full px-4 py-3 bg-white border ${erro && !categoria ? 'border-red-500' : 'border-slate-200'} rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#4b5e28] ${categoria ? 'text-slate-700' : 'text-slate-400'}`}
+                  className={`w-full px-4 py-3 bg-white border ${erro && !categoria ? 'border-red-500' : 'border-slate-200'} rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#2563eb] ${categoria ? 'text-slate-700' : 'text-slate-400'}`}
                 >
                   <option value="">Selecione o assunto...</option>
                   <option value="iluminacao">Iluminação Pública</option>
@@ -155,7 +155,7 @@ export default function NovoChamado({ setActivePage }) {
                   value={bairro}
                   onChange={(e) => setBairro(e.target.value)}
                   placeholder="Bairro da ocorrência" 
-                  className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#4b5e28] placeholder:text-slate-400" 
+                  className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#2563eb] placeholder:text-slate-400" 
                 />
               </div>
             </div>
@@ -168,7 +168,7 @@ export default function NovoChamado({ setActivePage }) {
                 value={endereco}
                 onChange={(e) => setEndereco(e.target.value)}
                 placeholder="Rua, Número, Ponto de Referência" 
-                className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#4b5e28] placeholder:text-slate-400" 
+                className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#2563eb] placeholder:text-slate-400" 
               />
             </div>
 
@@ -180,7 +180,7 @@ export default function NovoChamado({ setActivePage }) {
                 value={descricao}
                 onChange={(e) => setDescricao(e.target.value)}
                 placeholder="Descreva os detalhes do problema reportado pelo cidadão..." 
-                className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#4b5e28] placeholder:text-slate-400 resize-none"
+                className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#2563eb] placeholder:text-slate-400 resize-none"
               ></textarea>
             </div>
 
@@ -197,10 +197,10 @@ export default function NovoChamado({ setActivePage }) {
                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                   />
                   <div className="w-12 h-12 bg-white border border-slate-200 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-sm pointer-events-none">
-                    <UploadCloud size={20} className="text-slate-400 group-hover:text-[#4b5e28] transition-colors" />
+                    <UploadCloud size={20} className="text-slate-400 group-hover:text-[#2563eb] transition-colors" />
                   </div>
                   <p className="text-sm font-medium text-slate-700 mb-1 pointer-events-none">
-                    <span className="text-[#4b5e28] font-bold">Clique para upload</span> ou arraste o arquivo aqui
+                    <span className="text-[#2563eb] font-bold">Clique para upload</span> ou arraste o arquivo aqui
                   </p>
                   <p className="text-xs text-slate-500 pointer-events-none">PNG, JPG, MP4 ou MOV até 10MB</p>
                 </div>
@@ -241,7 +241,7 @@ export default function NovoChamado({ setActivePage }) {
               <button 
                 type="submit" 
                 disabled={sucesso}
-                className={`px-8 py-2.5 rounded-lg text-sm font-bold shadow-md transition-all ${sucesso ? 'bg-green-600 text-white cursor-not-allowed' : 'bg-[#4b5e28] hover:bg-[#3a4920] text-white hover:shadow-lg cursor-pointer'}`}
+                className={`px-8 py-2.5 rounded-lg text-sm font-bold shadow-md transition-all ${sucesso ? 'bg-green-600 text-white cursor-not-allowed' : 'bg-[#2563eb] hover:bg-[#1d4ed8] text-white hover:shadow-lg cursor-pointer'}`}
               >
                 {sucesso ? 'Criando...' : 'Criar Chamado'}
               </button>

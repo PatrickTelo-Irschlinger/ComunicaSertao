@@ -174,10 +174,10 @@ export default function Secretarias() {
             value={termoPesquisa}
             onChange={(e) => setTermoPesquisa(e.target.value)}
             placeholder="Pesquisar secretaria ou responsável..."
-            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#4b5e28]"
+            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#2563eb]"
           />
         </div>
-        <button onClick={() => setModalNova(true)} className="flex items-center justify-center gap-2 px-5 py-2.5 bg-[#4b5e28] hover:bg-[#3a4920] text-white rounded-lg text-sm font-bold shadow-md transition-all">
+        <button onClick={() => setModalNova(true)} className="flex items-center justify-center gap-2 px-5 py-2.5 bg-[#2563eb] hover:bg-[#1d4ed8] text-white rounded-lg text-sm font-bold shadow-md transition-all">
           <Plus size={18} /> Nova Secretaria
         </button>
       </div>
@@ -197,7 +197,7 @@ export default function Secretarias() {
             {/* Topo do Card */}
             <div className="p-5 border-b border-slate-100 flex items-start justify-between">
               <div className="flex items-center gap-3">
-                <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${sec.status === 'Ativo' ? 'bg-[#4b5e28]/10 text-[#4b5e28]' : 'bg-slate-100 text-slate-400'}`}>
+                <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${sec.status === 'Ativo' ? 'bg-[#2563eb]/10 text-[#2563eb]' : 'bg-slate-100 text-slate-400'}`}>
                   <Building2 size={20} />
                 </div>
                 <div>
@@ -273,7 +273,7 @@ export default function Secretarias() {
               </div>
               <button
                 onClick={() => abrirModalEquipe(sec)}
-                className="w-7 h-7 flex items-center justify-center rounded-full bg-slate-200 text-slate-600 hover:bg-[#4b5e28] hover:text-white transition-colors"
+                className="w-7 h-7 flex items-center justify-center rounded-full bg-slate-200 text-slate-600 hover:bg-[#2563eb] hover:text-white transition-colors"
                 title="Gerenciar equipe"
               >
                 <Plus size={14} />
@@ -304,25 +304,25 @@ export default function Secretarias() {
             <form onSubmit={handleCriarSecretaria} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Nome da Secretaria</label>
-                <input type="text" required value={novaSec.nome} onChange={e => setNovaSec({ ...novaSec, nome: e.target.value })} className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-[#4b5e28] focus:border-[#4b5e28] focus:outline-none" placeholder="Ex: Secretaria de Saúde" />
+                <input type="text" required value={novaSec.nome} onChange={e => setNovaSec({ ...novaSec, nome: e.target.value })} className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-[#2563eb] focus:border-[#2563eb] focus:outline-none" placeholder="Ex: Secretaria de Saúde" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Responsável</label>
-                <input type="text" required value={novaSec.responsavel} onChange={e => setNovaSec({ ...novaSec, responsavel: e.target.value })} className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-[#4b5e28] focus:border-[#4b5e28] focus:outline-none" placeholder="Nome do secretário(a)" />
+                <input type="text" required value={novaSec.responsavel} onChange={e => setNovaSec({ ...novaSec, responsavel: e.target.value })} className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-[#2563eb] focus:border-[#2563eb] focus:outline-none" placeholder="Nome do secretário(a)" />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">E-mail Institucional</label>
-                  <input type="email" required value={novaSec.email} onChange={e => setNovaSec({ ...novaSec, email: e.target.value })} className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-[#4b5e28] focus:border-[#4b5e28] focus:outline-none" placeholder="@sertao.rs.gov.br" />
+                  <input type="email" required value={novaSec.email} onChange={e => setNovaSec({ ...novaSec, email: e.target.value })} className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-[#2563eb] focus:border-[#2563eb] focus:outline-none" placeholder="@sertao.rs.gov.br" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">Telefone Principal</label>
-                  <input type="text" required value={novaSec.telefone} onChange={e => setNovaSec({ ...novaSec, telefone: e.target.value })} className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-[#4b5e28] focus:border-[#4b5e28] focus:outline-none" placeholder="(00) 0000-0000" />
+                  <input type="text" required value={novaSec.telefone} onChange={e => setNovaSec({ ...novaSec, telefone: e.target.value })} className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-[#2563eb] focus:border-[#2563eb] focus:outline-none" placeholder="(00) 0000-0000" />
                 </div>
               </div>
               <div className="flex justify-end gap-3 pt-4 border-t border-slate-100 mt-6">
                 <button type="button" onClick={() => setModalNova(false)} className="px-5 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-lg transition-colors">Cancelar</button>
-                <button type="submit" className="px-5 py-2.5 bg-[#4b5e28] hover:bg-[#3a4920] text-white rounded-lg text-sm font-bold shadow-md transition-colors">Criar Secretaria</button>
+                <button type="submit" className="px-5 py-2.5 bg-[#2563eb] hover:bg-[#1d4ed8] text-white rounded-lg text-sm font-bold shadow-md transition-colors">Criar Secretaria</button>
               </div>
             </form>
           </div>
@@ -342,20 +342,20 @@ export default function Secretarias() {
             <form onSubmit={handleSalvarEdicao} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Nome da Secretaria</label>
-                <input type="text" required value={secEditando.nome} onChange={e => setSecEditando({ ...secEditando, nome: e.target.value })} className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-[#4b5e28] focus:border-[#4b5e28] focus:outline-none" />
+                <input type="text" required value={secEditando.nome} onChange={e => setSecEditando({ ...secEditando, nome: e.target.value })} className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-[#2563eb] focus:border-[#2563eb] focus:outline-none" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Responsável</label>
-                <input type="text" required value={secEditando.responsavel} onChange={e => setSecEditando({ ...secEditando, responsavel: e.target.value })} className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-[#4b5e28] focus:border-[#4b5e28] focus:outline-none" />
+                <input type="text" required value={secEditando.responsavel} onChange={e => setSecEditando({ ...secEditando, responsavel: e.target.value })} className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-[#2563eb] focus:border-[#2563eb] focus:outline-none" />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">E-mail Institucional</label>
-                  <input type="email" required value={secEditando.email} onChange={e => setSecEditando({ ...secEditando, email: e.target.value })} className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-[#4b5e28] focus:border-[#4b5e28] focus:outline-none" />
+                  <input type="email" required value={secEditando.email} onChange={e => setSecEditando({ ...secEditando, email: e.target.value })} className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-[#2563eb] focus:border-[#2563eb] focus:outline-none" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">Telefone Principal</label>
-                  <input type="text" required value={secEditando.telefone} onChange={e => setSecEditando({ ...secEditando, telefone: e.target.value })} className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-[#4b5e28] focus:border-[#4b5e28] focus:outline-none" />
+                  <input type="text" required value={secEditando.telefone} onChange={e => setSecEditando({ ...secEditando, telefone: e.target.value })} className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-[#2563eb] focus:border-[#2563eb] focus:outline-none" />
                 </div>
               </div>
               <div className="flex justify-end gap-3 pt-4 border-t border-slate-100 mt-6">
@@ -410,7 +410,7 @@ export default function Secretarias() {
                 onChange={(e) => setNovoMembro(e.target.value)}
                 onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); adicionarMembro(); } }}
                 placeholder="Nome do novo funcionário..."
-                className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#4b5e28] focus:border-transparent transition-all"
+                className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition-all"
               />
               <div className="flex gap-3">
                 <input
@@ -420,12 +420,12 @@ export default function Secretarias() {
                   onChange={(e) => { setNovoTelefone(formatarCelular(e.target.value)); setErroTelefone(''); }}
                   onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); adicionarMembro(); } }}
                   placeholder="Celular (opcional): (00) 00000-0000"
-                  className={`flex-1 px-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:border-transparent transition-all ${erroTelefone ? 'border-red-400 focus:ring-red-400' : 'border-slate-300 focus:ring-[#4b5e28]'}`}
+                  className={`flex-1 px-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:border-transparent transition-all ${erroTelefone ? 'border-red-400 focus:ring-red-400' : 'border-slate-300 focus:ring-[#2563eb]'}`}
                 />
                 <button
                   type="button"
                   onClick={adicionarMembro}
-                  className="px-5 py-2.5 bg-[#4b5e28] hover:bg-[#3a4920] text-white rounded-lg text-sm font-bold flex items-center gap-2 shadow-sm transition-colors"
+                  className="px-5 py-2.5 bg-[#2563eb] hover:bg-[#1d4ed8] text-white rounded-lg text-sm font-bold flex items-center gap-2 shadow-sm transition-colors"
                 >
                   <UserPlus size={16} /> Adicionar
                 </button>
@@ -450,7 +450,7 @@ export default function Secretarias() {
                   </div>
                 ) : (
                   secEquipe.equipe.map((membro, idx) => (
-                    <div key={idx} className="flex items-center justify-between p-3.5 border border-slate-200 rounded-lg hover:border-[#4b5e28]/30 hover:bg-[#4b5e28]/5 transition-colors group">
+                    <div key={idx} className="flex items-center justify-between p-3.5 border border-slate-200 rounded-lg hover:border-[#2563eb]/30 hover:bg-[#2563eb]/5 transition-colors group">
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 shrink-0">
                           <User size={14} />

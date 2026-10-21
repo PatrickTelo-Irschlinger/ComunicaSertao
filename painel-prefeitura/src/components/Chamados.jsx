@@ -117,7 +117,7 @@ export default function Chamados({ chamados = [], setChamados, onSelectChamado }
     }
     if (s.includes('andamento')) {
       return (
-        <span className="inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-bold bg-[#e9edc9] text-[#4b5e28]">
+        <span className="inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-bold bg-[#dbeafe] text-[#2563eb]">
           Em andamento
         </span>
       );
@@ -160,7 +160,7 @@ export default function Chamados({ chamados = [], setChamados, onSelectChamado }
             value={pesquisa}
             onChange={(e) => setPesquisa(e.target.value)}
             placeholder="Pesquisar por ID, Cidadão ou Local..."
-            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#4b5e28] text-slate-700 placeholder:text-slate-400"
+            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#2563eb] text-slate-700 placeholder:text-slate-400"
           />
         </div>
 
@@ -186,7 +186,7 @@ export default function Chamados({ chamados = [], setChamados, onSelectChamado }
                   }}
                   className={`w-full text-left px-4 py-2 text-xs font-semibold transition-colors ${
                     filtroStatus === st
-                      ? 'bg-[#4b5e28]/10 text-[#4b5e28]'
+                      ? 'bg-[#2563eb]/10 text-[#2563eb]'
                       : 'text-slate-600 hover:bg-slate-50'
                   }`}
                 >
@@ -285,8 +285,8 @@ export default function Chamados({ chamados = [], setChamados, onSelectChamado }
                             }}
                             className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-all cursor-pointer ${
                               menuAbertoId === idRow
-                                ? 'bg-[#4b5e28] text-white border-[#4b5e28] shadow-sm'
-                                : 'bg-white text-slate-700 border-slate-300 hover:border-[#4b5e28] hover:text-[#4b5e28]'
+                                ? 'bg-[#2563eb] text-white border-[#2563eb] shadow-sm'
+                                : 'bg-white text-slate-700 border-slate-300 hover:border-[#2563eb] hover:text-[#2563eb]'
                             }`}
                           >
                             Selecionar ▾
@@ -358,7 +358,7 @@ export default function Chamados({ chamados = [], setChamados, onSelectChamado }
             <button type="button" className="px-3 py-1.5 border border-slate-200 rounded-lg text-slate-400 hover:bg-slate-50">
               Anterior
             </button>
-            <button type="button" className="w-8 h-8 rounded-lg bg-[#4b5e28] text-white font-bold flex items-center justify-center">
+            <button type="button" className="w-8 h-8 rounded-lg bg-[#2563eb] text-white font-bold flex items-center justify-center">
               1
             </button>
             <button type="button" className="w-8 h-8 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 flex items-center justify-center">

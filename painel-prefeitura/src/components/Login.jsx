@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { EyeOff, Eye, AlertCircle, ShieldCheck } from 'lucide-react';
-// IMPORTAÇÃO DA LOGO
-import logoSertao from '../assets/logo.png'; 
+import brasaoSertao from '../assets/brasao-sertao.jpg'; 
 
 export default function Login({ onLogin, onGoToCadastro, onGoToEsqueceuSenha }) {
   const [mostrarSenha, setMostrarSenha] = useState(false);
@@ -65,7 +64,7 @@ export default function Login({ onLogin, onGoToCadastro, onGoToEsqueceuSenha }) 
     <div className="flex min-h-screen bg-white font-sans">
       
       {/* ========================================================= */}
-      {/* LADO ESQUERDO - FORMULÁRIO ORIGINAL                       */}
+      {/* LADO ESQUERDO - FORMULÁRIO EM AZUL (#2563eb / #1d4ed8)    */}
       {/* ========================================================= */}
       <div className="w-full lg:w-1/2 flex flex-col relative px-8 sm:px-16 lg:px-24 xl:px-32 z-10 bg-white">
         <div className="flex-1 flex flex-col justify-center py-12">
@@ -73,7 +72,7 @@ export default function Login({ onLogin, onGoToCadastro, onGoToEsqueceuSenha }) 
           <div className="max-w-md w-full mx-auto">
             
             <div className="flex items-center gap-2 mb-2 text-slate-500">
-              <ShieldCheck size={18} className="text-[#4b5e28]" />
+              <ShieldCheck size={18} className="text-[#2563eb]" />
               <p className="text-sm font-medium">Painel do Servidor</p>
             </div>
             
@@ -84,7 +83,7 @@ export default function Login({ onLogin, onGoToCadastro, onGoToEsqueceuSenha }) 
               {/* E-mail Institucional */}
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">E-mail Institucional</label>
-                <div className={`relative w-full bg-white border ${erro && (!email || !email.includes(dominioOficial)) ? 'border-red-500' : 'border-slate-300'} rounded-lg focus-within:ring-2 focus-within:ring-[#4b5e28] focus-within:border-transparent transition-all overflow-hidden`}>
+                <div className={`relative w-full bg-white border ${erro && (!email || !email.includes(dominioOficial)) ? 'border-red-500' : 'border-slate-300'} rounded-lg focus-within:ring-2 focus-within:ring-[#2563eb] focus-within:border-transparent transition-all overflow-hidden`}>
                   <div className="absolute inset-0 px-4 py-3 text-sm pointer-events-none flex items-center whitespace-nowrap overflow-hidden">
                     <span className="text-transparent">{email}</span>
                     {sugestaoEmail && (
@@ -115,7 +114,7 @@ export default function Login({ onLogin, onGoToCadastro, onGoToEsqueceuSenha }) 
                     value={senha}
                     onChange={(e) => { setSenha(e.target.value); if (erro) setErro(''); }}
                     placeholder="Digite sua senha" 
-                    className={`w-full px-4 py-3 bg-white border ${erro && senha.length > 0 && !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(senha) ? 'border-red-500 focus:ring-red-500' : 'border-slate-300 focus:ring-[#4b5e28]'} rounded-lg text-sm focus:outline-none focus:ring-2 focus:border-transparent transition-all placeholder:text-slate-400 pr-12`}
+                    className={`w-full px-4 py-3 bg-white border ${erro && senha.length > 0 && !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(senha) ? 'border-red-500 focus:ring-red-500' : 'border-slate-300 focus:ring-[#2563eb]'} rounded-lg text-sm focus:outline-none focus:ring-2 focus:border-transparent transition-all placeholder:text-slate-400 pr-12`}
                   />
                   <button 
                     type="button"
@@ -138,23 +137,23 @@ export default function Login({ onLogin, onGoToCadastro, onGoToEsqueceuSenha }) 
               {/* Checkbox e Esqueceu a Senha */}
               <div className="flex items-center justify-between pt-2">
                 <label className="flex items-center gap-2 cursor-pointer group">
-                  <input type="checkbox" className="w-4 h-4 rounded border-slate-300 text-[#4b5e28] focus:ring-[#4b5e28] accent-[#4b5e28] cursor-pointer" />
+                  <input type="checkbox" className="w-4 h-4 rounded border-slate-300 text-[#2563eb] focus:ring-[#2563eb] accent-[#2563eb] cursor-pointer" />
                   <span className="text-sm font-medium text-slate-600 group-hover:text-slate-800 transition-colors">Manter conectado</span>
                 </label>
                 
                 <button 
                   type="button" 
                   onClick={onGoToEsqueceuSenha}
-                  className="text-sm font-semibold text-[#4b5e28] hover:text-[#3a4920] hover:underline transition-colors cursor-pointer"
+                  className="text-sm font-semibold text-[#2563eb] hover:text-[#1d4ed8] hover:underline transition-colors cursor-pointer"
                 >
                   Esqueceu a senha?
                 </button>
               </div>
 
-              {/* Botão Entrar */}
+              {/* Botão Entrar no Painel */}
               <button 
                 type="submit"
-                className="w-full py-3.5 px-4 bg-[#4b5e28] hover:bg-[#3a4920] text-white font-medium rounded-lg transition-all shadow-[0_8px_20px_rgba(75,94,40,0.25)] hover:shadow-[0_4px_12px_rgba(75,94,40,0.2)] mt-4 cursor-pointer"
+                className="w-full py-3.5 px-4 bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-medium rounded-lg transition-all shadow-[0_8px_20px_rgba(37,99,235,0.25)] hover:shadow-[0_4px_12px_rgba(37,99,235,0.2)] mt-4 cursor-pointer"
               >
                 Entrar no Painel
               </button>
@@ -162,7 +161,7 @@ export default function Login({ onLogin, onGoToCadastro, onGoToEsqueceuSenha }) 
               {/* Solicitar Acesso */}
               <div className="text-center mt-6 pt-6 border-t border-slate-100">
                 <p className="text-sm text-slate-500 font-medium">
-                  É um novo servidor? <button type="button" onClick={onGoToCadastro} className="text-[#4b5e28] font-semibold hover:underline cursor-pointer">Solicitar Acesso</button>
+                  É um novo servidor? <button type="button" onClick={onGoToCadastro} className="text-[#2563eb] font-semibold hover:text-[#1d4ed8] hover:underline cursor-pointer">Solicitar Acesso</button>
                 </p>
               </div>
 
@@ -176,45 +175,52 @@ export default function Login({ onLogin, onGoToCadastro, onGoToEsqueceuSenha }) 
       </div>
 
       {/* ========================================================= */}
-      {/* LADO DIREITO - LOGO E TEXTO CENTRALIZADOS                 */}
+      {/* LADO DIREITO - MAIS ALTO (-mt-36) E ESPAÇAMENTO ALINHADO  */}
       {/* ========================================================= */}
-      <div className="hidden lg:flex w-1/2 bg-[#16161b] relative overflow-hidden items-center justify-center p-12">
-        {/* Efeitos de fundo visuais */}
-        <div className="absolute -top-[350px] -right-[350px] w-[800px] h-[800px] rounded-full border border-white/[0.03] pointer-events-none"></div>
-        <div className="absolute -top-[450px] -right-[450px] w-[1100px] h-[1100px] rounded-full border border-white/[0.03] pointer-events-none"></div>
-        <div className="absolute -top-[550px] -right-[550px] w-[1400px] h-[1400px] rounded-full border border-white/[0.03] pointer-events-none"></div>
-        <div className="absolute -top-[650px] -right-[650px] w-[1700px] h-[1700px] rounded-full border border-white/[0.03] pointer-events-none"></div>
+      <div className="hidden lg:flex w-1/2 flex-col bg-[#ffffff] border-l border-slate-200 relative overflow-hidden px-12">
+        <div className="absolute -top-[350px] -right-[350px] w-[800px] h-[800px] rounded-full border border-slate-900/[0.04] pointer-events-none"></div>
+        <div className="absolute -top-[450px] -right-[450px] w-[1100px] h-[1100px] rounded-full border border-slate-900/[0.04] pointer-events-none"></div>
+        <div className="absolute -top-[550px] -right-[550px] w-[1400px] h-[1400px] rounded-full border border-slate-900/[0.04] pointer-events-none"></div>
+        <div className="absolute -top-[650px] -right-[650px] w-[1700px] h-[1700px] rounded-full border border-slate-900/[0.04] pointer-events-none"></div>
 
-        <div className="absolute bottom-[20%] -left-[150px] w-[500px] h-[500px] bg-[#dcfce7] rounded-full blur-[150px] opacity-[0.08] pointer-events-none"></div>
-        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-[#4b5e28] rounded-full blur-[150px] opacity-10 -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
-
-        <div className="relative z-10 max-w-lg w-full flex flex-col items-center justify-center text-center">
-          
-          {/* LOGO DA PREFEITURA CENTRALIZADA */}
-          <div className="mb-10 w-full flex justify-center">
-             <img 
-               src={logoSertao} 
-               alt="Logótipo da Prefeitura Municipal de Sertão" 
-               className="h-32 w-auto object-contain drop-shadow-2xl" 
-             />
-          </div>
-
-          {/* TÍTULO E SUBTÍTULO CENTRALIZADOS */}
-          <div className="w-full flex flex-col items-center">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-6 h-px bg-[#6a8738]"></div>
-              <span className="text-[#6a8738] text-xs font-bold tracking-widest uppercase">Comunica Sertão</span>
-              <div className="w-6 h-px bg-[#6a8738]"></div>
-            </div>
+        <div className="flex-1 flex flex-col items-center justify-center py-12 -mt-36 relative z-10">
+          <div className="max-w-lg w-full flex flex-col items-center justify-center text-center">
             
-            <h2 className="text-5xl font-bold text-white leading-tight">
-              Canal interativo e <br/> direto com a <br/> prefeitura de <br/>
-              <span className="text-[#6a8738]">Sertão - RS</span>
-            </h2>
-          </div>
+            {/* BRASÃO DE SERTÃO */}
+            <div className="mb-5 w-full flex justify-center">
+               <img 
+                 src={brasaoSertao} 
+                 alt="Brasão do Município de Sertão" 
+                 className="h-40 w-auto object-contain mix-blend-multiply" 
+               />
+            </div>
 
+            {/* COMUNICA SERTÃO CENTRALIZADO E COM ESPAÇAMENTO CORRETO */}
+            <div className="w-full flex flex-col items-center">
+              <div className="flex items-center justify-center gap-3 mb-3">
+                <div className="w-8 h-0.5 bg-[#eab308] shrink-0"></div>
+                <span className="text-[#f8e000] text-lg font-black tracking-[0.18em] pl-[0.18em] uppercase leading-none drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.45)]">
+                  Comunica Sertão
+                </span>
+                <div className="w-8 h-0.5 bg-[#eab308] shrink-0"></div>
+              </div>
+              
+              <h2 className="text-5xl font-bold text-slate-900 leading-[1.18] tracking-tight">
+                Canal interativo e <br/>
+                direto com a <br/>
+                prefeitura de <br/>
+                <span className="inline-block mt-1 text-[#f8e000] drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.35)]">
+                  Sertão - RS
+                </span>
+              </h2>
+            </div>
+
+          </div>
         </div>
 
+        <div className="pb-8 invisible select-none" aria-hidden="true">
+          <p className="text-xs">© 2026</p>
+        </div>
       </div>
     </div>
   );

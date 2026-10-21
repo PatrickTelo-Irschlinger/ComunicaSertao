@@ -70,7 +70,7 @@ export default function Header({ activePage, setActivePage }) {
         {/* Botão Novo Chamado */}
         <button
           onClick={() => setActivePage && setActivePage('novo-chamado')}
-          className="flex items-center gap-2 px-4 py-2.5 bg-[#4b5e28] hover:bg-[#3a4920] text-white text-xs font-bold rounded-lg shadow-sm transition-all cursor-pointer"
+          className="flex items-center gap-2 px-4 py-2.5 bg-[#2563eb] hover:bg-[#1d4ed8] text-white text-xs font-bold rounded-lg shadow-sm transition-all cursor-pointer"
         >
           <Plus size={16} />
           <span>Novo Chamado</span>

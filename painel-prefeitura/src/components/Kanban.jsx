@@ -101,53 +101,56 @@ export default function Kanban({ onSelectChamado }) {
 
   return (
     <div className="p-8 h-full bg-slate-50">
-      <div className="flex h-full gap-6 overflow-x-auto pb-4">
-        {/* COLUNA 1 */}
-        <div className="flex flex-col min-w-[320px] w-[320px] bg-slate-100/50 rounded-2xl border border-slate-200">
-          <div className="p-4 border-b border-slate-200 border-t-4 border-t-yellow-500 rounded-t-2xl flex justify-between items-center bg-white">
-            <div className="flex items-center gap-2">
-              <h3 className="font-bold text-slate-800">Pendentes</h3>
-              <span className="bg-slate-100 text-slate-600 text-xs font-bold px-2 py-0.5 rounded-full">{cards.pendentes.length}</span>
+      <div className="flex h-full overflow-x-auto pb-4">
+        {/* Wrapper centralizador: mx-auto centraliza quando cabe na tela e, se faltar espaço, volta a alinhar à esquerda mantendo o scroll horizontal */}
+        <div className="flex h-full gap-6 mx-auto">
+          {/* COLUNA 1 */}
+          <div className="flex flex-col min-w-[320px] w-[320px] bg-slate-100/50 rounded-2xl border border-slate-200 ml-8">
+            <div className="p-4 border-b border-slate-200 border-t-4 border-t-yellow-500 rounded-t-2xl flex justify-between items-center bg-white">
+              <div className="flex items-center gap-2">
+                <h3 className="font-bold text-slate-800">Pendentes</h3>
+                <span className="bg-slate-100 text-slate-600 text-xs font-bold px-2 py-0.5 rounded-full">{cards.pendentes.length}</span>
+              </div>
+            </div>
+            <div className="p-4 flex-1 flex flex-col gap-4 overflow-y-auto" onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, 'pendentes')}>
+              {cards.pendentes.map(card => renderCard(card, 'pendentes'))}
             </div>
           </div>
-          <div className="p-4 flex-1 flex flex-col gap-4 overflow-y-auto" onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, 'pendentes')}>
-            {cards.pendentes.map(card => renderCard(card, 'pendentes'))}
-          </div>
-        </div>
-        {/* COLUNA 2 */}
-        <div className="flex flex-col min-w-[320px] w-[320px] bg-slate-100/50 rounded-2xl border border-slate-200">
-          <div className="p-4 border-b border-slate-200 border-t-4 border-t-[#1e3a8a] rounded-t-2xl flex justify-between items-center bg-white">
-            <div className="flex items-center gap-2">
-              <h3 className="font-bold text-slate-800">Em Andamento</h3>
-              <span className="bg-slate-100 text-slate-600 text-xs font-bold px-2 py-0.5 rounded-full">{cards.emAndamento.length}</span>
+          {/* COLUNA 2 */}
+          <div className="flex flex-col min-w-[320px] w-[320px] bg-slate-100/50 rounded-2xl border border-slate-200">
+            <div className="p-4 border-b border-slate-200 border-t-4 border-t-[#1e3a8a] rounded-t-2xl flex justify-between items-center bg-white">
+              <div className="flex items-center gap-2">
+                <h3 className="font-bold text-slate-800">Em Andamento</h3>
+                <span className="bg-slate-100 text-slate-600 text-xs font-bold px-2 py-0.5 rounded-full">{cards.emAndamento.length}</span>
+              </div>
+            </div>
+            <div className="p-4 flex-1 flex flex-col gap-4 overflow-y-auto" onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, 'emAndamento')}>
+              {cards.emAndamento.map(card => renderCard(card, 'emAndamento'))}
             </div>
           </div>
-          <div className="p-4 flex-1 flex flex-col gap-4 overflow-y-auto" onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, 'emAndamento')}>
-            {cards.emAndamento.map(card => renderCard(card, 'emAndamento'))}
-          </div>
-        </div>
-        {/* COLUNA 3 */}
-        <div className="flex flex-col min-w-[320px] w-[320px] bg-slate-100/50 rounded-2xl border border-slate-200">
-          <div className="p-4 border-b border-slate-200 border-t-4 border-t-[#4b5e28] rounded-t-2xl flex justify-between items-center bg-white">
-            <div className="flex items-center gap-2">
-              <h3 className="font-bold text-slate-800">Concluídos</h3>
-              <span className="bg-slate-100 text-slate-600 text-xs font-bold px-2 py-0.5 rounded-full">{cards.concluidos.length}</span>
+          {/* COLUNA 3 */}
+          <div className="flex flex-col min-w-[320px] w-[320px] bg-slate-100/50 rounded-2xl border border-slate-200">
+            <div className="p-4 border-b border-slate-200 border-t-4 border-t-[#4b5e28] rounded-t-2xl flex justify-between items-center bg-white">
+              <div className="flex items-center gap-2">
+                <h3 className="font-bold text-slate-800">Concluídos</h3>
+                <span className="bg-slate-100 text-slate-600 text-xs font-bold px-2 py-0.5 rounded-full">{cards.concluidos.length}</span>
+              </div>
+            </div>
+            <div className="p-4 flex-1 flex flex-col gap-4 overflow-y-auto" onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, 'concluidos')}>
+              {cards.concluidos.map(card => renderCard(card, 'concluidos'))}
             </div>
           </div>
-          <div className="p-4 flex-1 flex flex-col gap-4 overflow-y-auto" onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, 'concluidos')}>
-            {cards.concluidos.map(card => renderCard(card, 'concluidos'))}
-          </div>
-        </div>
-        {/* COLUNA 4 */}
-        <div className="flex flex-col min-w-[320px] w-[320px] bg-slate-100/50 rounded-2xl border border-slate-200 mr-8">
-          <div className="p-4 border-b border-slate-200 border-t-4 border-t-red-500 rounded-t-2xl flex justify-between items-center bg-white opacity-80">
-            <div className="flex items-center gap-2">
-              <h3 className="font-bold text-slate-800">Cancelados</h3>
-              <span className="bg-slate-100 text-slate-600 text-xs font-bold px-2 py-0.5 rounded-full">{cards.cancelados.length}</span>
+          {/* COLUNA 4 */}
+          <div className="flex flex-col min-w-[320px] w-[320px] bg-slate-100/50 rounded-2xl border border-slate-200 mr-8">
+            <div className="p-4 border-b border-slate-200 border-t-4 border-t-red-500 rounded-t-2xl flex justify-between items-center bg-white opacity-80">
+              <div className="flex items-center gap-2">
+                <h3 className="font-bold text-slate-800">Cancelados</h3>
+                <span className="bg-slate-100 text-slate-600 text-xs font-bold px-2 py-0.5 rounded-full">{cards.cancelados.length}</span>
+              </div>
             </div>
-          </div>
-          <div className="p-4 flex-1 flex flex-col gap-4 overflow-y-auto opacity-75" onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, 'cancelados')}>
-            {cards.cancelados.map(card => renderCard(card, 'cancelados'))}
+            <div className="p-4 flex-1 flex flex-col gap-4 overflow-y-auto opacity-75" onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, 'cancelados')}>
+              {cards.cancelados.map(card => renderCard(card, 'cancelados'))}
+            </div>
           </div>
         </div>
       </div>
