@@ -144,11 +144,7 @@ export default function HistoricoNotificacoes({
   const limparHistorico = () => {
     setNotificacoes([]);
     setConfirmarLimpar(false);
-<<<<<<< HEAD
     setCarregouAntigas(true);
-=======
-    setCarregouAntigas(true); // esconde o botão "Carregar mais antigas"
->>>>>>> 0844d32dfc4c1bba2af2ffaa4e717c79fc4582da
   };
 
   const carregarAntigas = () => {
@@ -173,11 +169,7 @@ export default function HistoricoNotificacoes({
   const btnFiltro = (ativo) =>
     `px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm flex items-center gap-2 border cursor-pointer ${
       ativo
-<<<<<<< HEAD
         ? 'bg-[#2563eb] border-[#2563eb] text-white'
-=======
-        ? 'bg-[#4b5e28] border-[#4b5e28] text-white'
->>>>>>> 0844d32dfc4c1bba2af2ffaa4e717c79fc4582da
         : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
     }`;
 
@@ -219,11 +211,7 @@ export default function HistoricoNotificacoes({
                 type="button"
                 onClick={marcarTodasComoLidas}
                 disabled={totalNaoLidas === 0}
-<<<<<<< HEAD
                 className="p-2 text-slate-500 hover:text-[#2563eb] hover:bg-[#2563eb]/10 rounded-lg transition-colors border border-transparent cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-slate-500"
-=======
-                className="p-2 text-slate-500 hover:text-[#4b5e28] hover:bg-[#4b5e28]/10 rounded-lg transition-colors border border-transparent cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-slate-500"
->>>>>>> 0844d32dfc4c1bba2af2ffaa4e717c79fc4582da
                 title="Marcar todas como lidas"
               >
                 <Check size={18} />
@@ -300,11 +288,7 @@ export default function HistoricoNotificacoes({
                     <span className="text-sm text-slate-700 font-medium">{t.rotulo}</span>
                     <span
                       className={`relative inline-block w-9 h-5 rounded-full transition-colors ${
-<<<<<<< HEAD
                         tiposAtivos[t.chave] ? 'bg-[#2563eb]' : 'bg-slate-300'
-=======
-                        tiposAtivos[t.chave] ? 'bg-[#4b5e28]' : 'bg-slate-300'
->>>>>>> 0844d32dfc4c1bba2af2ffaa4e717c79fc4582da
                       }`}
                     >
                       <span
@@ -370,11 +354,7 @@ export default function HistoricoNotificacoes({
                           <button
                             type="button"
                             onClick={() => verDetalhes(notif)}
-<<<<<<< HEAD
                             className="text-xs font-semibold text-[#2563eb] hover:underline cursor-pointer"
-=======
-                            className="text-xs font-semibold text-[#4b5e28] hover:underline cursor-pointer"
->>>>>>> 0844d32dfc4c1bba2af2ffaa4e717c79fc4582da
                           >
                             Ver detalhes
                           </button>
