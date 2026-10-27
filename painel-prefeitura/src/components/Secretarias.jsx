@@ -1,45 +1,7 @@
 import React, { useState } from 'react';
 import { Search, Plus, Building2, Mail, Phone, Users, MoreHorizontal, Edit, Trash2, UserPlus, UserMinus, X, AlertTriangle, ShieldCheck, UserX, User } from 'lucide-react';
 
-export default function Secretarias() {
-  // ==========================================
-  // ESTADOS DA LISTA DE SECRETARIAS
-  // ==========================================
-  const [secretarias, setSecretarias] = useState([
-    {
-      id: 1,
-      nome: 'Secretaria de Obras e Viação',
-      responsavel: 'Carlos Eduardo Oliveira',
-      email: 'obras@sertao.rs.gov.br',
-      telefone: '(54) 3345-1234',
-      status: 'Ativo',
-      equipe: [
-        { nome: 'José Santos (Engenheiro)', telefone: '(54) 99912-3456' },
-        { nome: 'Mariana Costa (Arquiteta)', telefone: '(54) 99876-5432' }
-      ]
-    },
-    {
-      id: 2,
-      nome: 'Secretaria de Saúde',
-      responsavel: 'Dra. Ana Maria Pereira',
-      email: 'saude@sertao.rs.gov.br',
-      telefone: '(54) 3345-5678',
-      status: 'Ativo',
-      equipe: [
-        { nome: 'Maria Santos (Técnica)', telefone: '(54) 99811-2233' }
-      ]
-    },
-    {
-      id: 3,
-      nome: 'Secretaria de Água e Saneamento',
-      responsavel: 'Roberto Carlos Silva',
-      email: 'agua@sertao.rs.gov.br',
-      telefone: '(54) 3345-9012',
-      status: 'Ativo',
-      equipe: []
-    }
-  ]);
-
+export default function Secretarias({ secretarias, setSecretarias }) {
   const [termoPesquisa, setTermoPesquisa] = useState('');
   const [menuAtivo, setMenuAtivo] = useState(null);
 
@@ -182,10 +144,7 @@ export default function Secretarias() {
         </button>
       </div>
 
-      {/* ======================================================= */}
       {/* GRID DE SECRETARIAS (CARDS) */}
-      {/* CORREÇÃO: removido o z-10 do grid, que prendia o menu abaixo do overlay */}
-      {/* ======================================================= */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative">
 
         {secretariasFiltradas.map((sec) => (
@@ -291,9 +250,7 @@ export default function Secretarias() {
 
       </div>
 
-      {/* ======================================================= */}
       {/* MODAL 1: NOVA SECRETARIA */}
-      {/* ======================================================= */}
       {modalNova && (
         <div className="fixed inset-0 z-[999999] flex items-center justify-center bg-black/60 p-4">
           <div className="bg-white rounded-2xl w-full max-w-lg p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
@@ -329,9 +286,7 @@ export default function Secretarias() {
         </div>
       )}
 
-      {/* ======================================================= */}
       {/* MODAL 2: EDITAR SECRETARIA */}
-      {/* ======================================================= */}
       {modalEditar && secEditando && (
         <div className="fixed inset-0 z-[999999] flex items-center justify-center bg-black/60 p-4">
           <div className="bg-white rounded-2xl w-full max-w-lg p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
@@ -367,9 +322,7 @@ export default function Secretarias() {
         </div>
       )}
 
-      {/* ======================================================= */}
       {/* MODAL 3: EXCLUIR SECRETARIA */}
-      {/* ======================================================= */}
       {modalExcluir && secExcluindo && (
         <div className="fixed inset-0 z-[999999] flex items-center justify-center bg-black/70 p-4">
           <div className="bg-white rounded-2xl w-full max-w-md p-6 text-center shadow-2xl animate-in fade-in zoom-in-95 duration-200">
@@ -386,9 +339,7 @@ export default function Secretarias() {
         </div>
       )}
 
-      {/* ======================================================= */}
       {/* MODAL 4: GERENCIAR EQUIPE */}
-      {/* ======================================================= */}
       {modalEquipe && secEquipe && (
         <div className="fixed inset-0 z-[999999] flex items-center justify-center bg-black/60 p-4">
           <div className="bg-white rounded-2xl w-full max-w-lg p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
@@ -402,7 +353,7 @@ export default function Secretarias() {
               <button onClick={() => setModalEquipe(false)} className="text-slate-400 hover:bg-slate-100 p-1.5 rounded-md transition-colors"><X size={20} /></button>
             </div>
 
-            {/* Adicionar membro (sem <form>, para não ser interceptado por nenhum form pai) */}
+            {/* Adicionar membro */}
             <div className="mb-6 space-y-3">
               <input
                 type="text"

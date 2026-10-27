@@ -14,6 +14,41 @@ import Login from './components/Login';
 import Cadastro from './components/Cadastro';
 import EsqueceuSenha from './components/EsqueceuSenha';
 
+const secretariasPadrao = [
+  {
+    id: 1,
+    nome: 'Secretaria de Obras e Viação',
+    responsavel: 'Carlos Eduardo Oliveira',
+    email: 'obras@sertao.rs.gov.br',
+    telefone: '(54) 3345-1234',
+    status: 'Ativo',
+    equipe: [
+      { nome: 'José Santos (Engenheiro)', telefone: '(54) 99912-3456' },
+      { nome: 'Mariana Costa (Arquiteta)', telefone: '(54) 99876-5432' }
+    ]
+  },
+  {
+    id: 2,
+    nome: 'Secretaria de Saúde',
+    responsavel: 'Dra. Ana Maria Pereira',
+    email: 'saude@sertao.rs.gov.br',
+    telefone: '(54) 3345-5678',
+    status: 'Ativo',
+    equipe: [
+      { nome: 'Maria Santos (Técnica)', telefone: '(54) 99811-2233' }
+    ]
+  },
+  {
+    id: 3,
+    nome: 'Secretaria de Água e Saneamento',
+    responsavel: 'Roberto Carlos Silva',
+    email: 'agua@sertao.rs.gov.br',
+    telefone: '(54) 3345-9012',
+    status: 'Ativo',
+    equipe: []
+  }
+];
+
 export default function App() {
   const dadosPadrao = [
     {
@@ -72,6 +107,7 @@ export default function App() {
   const [telaAuth, setTelaAuth] = useState('login');
   const [activePage, setActivePage] = useState('dashboard');
   const [chamados, setChamados] = useState(dadosPadrao);
+  const [secretarias, setSecretarias] = useState(secretariasPadrao);
   const [chamadoSelecionado, setChamadoSelecionado] = useState(null);
   const [usuario, setUsuario] = useState({
     nome: 'Administrador do Sistema',
@@ -92,11 +128,10 @@ export default function App() {
   };
 
   const handleSelectChamado = (chamado) => {
-    setChamadoSelecionado(chamado); // mantém origem e campos extras do Kanban/Dashboard
+    setChamadoSelecionado(chamado);
     setActivePage('chamado-detalhes');
   };
 
-  // Função central: usada pela lista e pela tela de detalhes
   const alterarStatusChamado = (id, novoStatus) => {
     const agora = new Date();
     const ultimaModificacao =
@@ -110,7 +145,31 @@ export default function App() {
     );
   };
 
-  // Chamado exibido nos detalhes: dados do clique + versão mais recente da lista
+  const encaminharChamado = (id, secretaria) => {
+    const agora = new Date();
+    const dataHora =
+      `${agora.toLocaleDateString('pt-BR')} às ` +
+      agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+    setChamados((prev) =>
+      prev.map((c) => {
+        if (c.id !== id) return c;
+        const registro = {
+          de: c.departamento || null,
+          para: secretaria.nome,
+          por: usuario.nome,
+          dataHora
+        };
+        return {
+          ...c,
+          departamento: secretaria.nome,
+          ultimaModificacao: dataHora,
+          encaminhamentos: [...(c.encaminhamentos || []), registro]
+        };
+      })
+    );
+  };
+
   const chamadoAtual = chamadoSelecionado
     ? {
         ...chamadoSelecionado,
@@ -182,6 +241,8 @@ export default function App() {
             <ChamadoDetalhes
               chamado={chamadoAtual}
               onAlterarStatus={alterarStatusChamado}
+              secretarias={secretarias}
+              onEncaminhar={encaminharChamado}
               onBack={() => setActivePage('chamados')}
               setActivePage={setActivePage}
             />
@@ -195,7 +256,9 @@ export default function App() {
             />
           )}
 
-          {activePage === 'secretarias' && <Secretarias />}
+          {activePage === 'secretarias' && (
+            <Secretarias secretarias={secretarias} setSecretarias={setSecretarias} />
+          )}
 
           {activePage === 'relatorios' && <Relatorios chamados={chamados} />}
 

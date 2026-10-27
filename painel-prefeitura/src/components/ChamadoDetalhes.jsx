@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Clock, User, FileText, MessageSquare, Paperclip, ChevronDown } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Clock, User, FileText, MessageSquare, Paperclip, Building2 } from 'lucide-react';
 import SeletorStatus from './SeletorStatus';
+import SeletorPrioridade from './SeletorPrioridade';
+import SeletorDepartamento from './SeletorDepartamento';
 
-export default function ChamadoDetalhes({ chamado, setActivePage, onAlterarStatus }) {
+export default function ChamadoDetalhes({ chamado, setActivePage, onAlterarStatus, secretarias = [], onEncaminhar }) {
   const [prioridadeAtiva, setPrioridadeAtiva] = useState(chamado?.prioridade || 'BAIXA');
 
   if (!chamado) {
@@ -31,13 +33,14 @@ export default function ChamadoDetalhes({ chamado, setActivePage, onAlterarStatu
     destinoVoltar = 'dashboard';
   }
 
-  // Aceita os nomes de campos da lista, do Kanban e do Dashboard
   const titulo = chamado.titulo || chamado.categoria || 'Solicitação';
   const autor = chamado.autor || chamado.solicitante || chamado.cidadao || chamado.nome || '—';
   const ultimaAtualizacao = chamado.ultimaModificacao || chamado.tempo || '—';
   const mensagens = chamado.mensagens ?? 0;
   const anexos = chamado.anexos ?? 0;
   const status = chamado.status || 'Pendente';
+  const departamento = chamado.departamento || 'Ainda não encaminhado';
+  const encaminhamentos = chamado.encaminhamentos || [];
 
   const getStatusColor = (st) => {
     const s = String(st).toLowerCase();
@@ -50,9 +53,9 @@ export default function ChamadoDetalhes({ chamado, setActivePage, onAlterarStatu
 
   const getPriorityStyle = (pri) => {
     switch (pri) {
-      case 'ALTA': return 'text-red-700 bg-red-100 border-red-200 hover:bg-red-200';
-      case 'MÉDIA': return 'text-yellow-700 bg-yellow-100 border-yellow-200 hover:bg-yellow-200';
-      case 'BAIXA': return 'text-green-700 bg-green-100 border-green-200 hover:bg-green-200';
+      case 'ALTA': return 'text-red-700 bg-red-100 border-red-200';
+      case 'MÉDIA': return 'text-yellow-700 bg-yellow-100 border-yellow-200';
+      case 'BAIXA': return 'text-green-700 bg-green-100 border-green-200';
       default: return 'text-slate-700 bg-slate-100 border-slate-200';
     }
   };
@@ -69,10 +72,16 @@ export default function ChamadoDetalhes({ chamado, setActivePage, onAlterarStatu
       <div className="bg-white p-8 rounded-xl border border-slate-200 shadow-sm">
         <div className="flex justify-between items-start mb-6">
           <div>
-            <div className="flex items-center gap-3 mb-2">
+            <div className="flex items-center gap-3 mb-2 flex-wrap">
               <h2 className="text-2xl font-bold text-slate-800">{titulo}</h2>
               <span className="px-2.5 py-1 text-xs font-bold bg-slate-100 text-slate-600 rounded-md border border-slate-200">
                 {chamado.id}
+              </span>
+              <span className={`px-3 py-1 text-xs font-bold rounded-md shadow-sm ${getStatusColor(status)}`}>
+                {status}
+              </span>
+              <span className={`px-2.5 py-1 text-[11px] font-bold rounded-md border ${getPriorityStyle(prioridadeAtiva)}`}>
+                Prioridade: {prioridadeAtiva}
               </span>
             </div>
             <p className="text-slate-500 flex items-center gap-2">
@@ -81,39 +90,11 @@ export default function ChamadoDetalhes({ chamado, setActivePage, onAlterarStatu
             </p>
           </div>
 
-          <div className="flex flex-col items-end gap-3">
-            {/* Alterar status + status atual */}
-            <div className="flex items-end gap-4">
-              <SeletorStatus
-                onChange={(novo) => onAlterarStatus && onAlterarStatus(chamado.id, novo)}
-              />
-              <span
-                className={`px-4 py-1.5 text-sm font-bold rounded-lg shadow-sm mb-0.5 ${getStatusColor(status)}`}
-              >
-                {status}
-              </span>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                Prioridade:
-              </span>
-              <div className="relative">
-                <select
-                  value={prioridadeAtiva}
-                  onChange={(e) => setPrioridadeAtiva(e.target.value)}
-                  className={`pl-3 pr-7 py-1 text-[11px] font-bold rounded border outline-none cursor-pointer appearance-none transition-colors ${getPriorityStyle(prioridadeAtiva)}`}
-                >
-                  <option value="BAIXA">BAIXA</option>
-                  <option value="MÉDIA">MÉDIA</option>
-                  <option value="ALTA">ALTA</option>
-                </select>
-                <ChevronDown
-                  size={12}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none opacity-60"
-                />
-              </div>
-            </div>
+          <div className="flex items-end gap-4">
+            <SeletorPrioridade onChange={setPrioridadeAtiva} />
+            <SeletorStatus
+              onChange={(novo) => onAlterarStatus && onAlterarStatus(chamado.id, novo)}
+            />
           </div>
         </div>
 
@@ -163,6 +144,53 @@ export default function ChamadoDetalhes({ chamado, setActivePage, onAlterarStatu
                 </span>
               </li>
             </ul>
+          </div>
+        </div>
+
+        <hr className="border-slate-100 my-8" />
+
+        <div>
+          <div className="flex justify-between items-start gap-4 mb-4">
+            <div>
+              <h3 className="font-bold text-slate-800 flex items-center gap-2">
+                <Building2 size={18} className="text-[#4b5e28]" /> Encaminhamento
+              </h3>
+              <p className="text-sm text-slate-500 mt-1">
+                Departamento responsável:{' '}
+                <strong className="text-slate-800">{departamento}</strong>
+              </p>
+            </div>
+
+            <SeletorDepartamento
+              secretarias={secretarias}
+              atual={chamado.departamento}
+              onChange={(sec) => onEncaminhar && onEncaminhar(chamado.id, sec)}
+            />
+          </div>
+
+          <div className="bg-slate-50 rounded-lg border border-slate-100 p-4">
+            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-3">
+              Histórico de encaminhamentos ({encaminhamentos.length})
+            </p>
+
+            {encaminhamentos.length === 0 ? (
+              <p className="text-sm text-slate-500">Esta solicitação ainda não foi encaminhada.</p>
+            ) : (
+              <ul className="space-y-3">
+                {[...encaminhamentos].reverse().map((enc, idx) => (
+                  <li key={idx} className="text-sm text-slate-600 border-b border-slate-100 pb-3 last:border-0 last:pb-0">
+                    <div className="flex items-center gap-2 font-medium text-slate-700">
+                      <span>{enc.de || 'Sem departamento'}</span>
+                      <ArrowRight size={14} className="text-slate-400 shrink-0" />
+                      <span>{enc.para}</span>
+                    </div>
+                    <p className="text-xs text-slate-500 mt-0.5">
+                      Por {enc.por} em {enc.dataHora}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
       </div>
