@@ -8,41 +8,13 @@ export default function EsqueceuSenha({ onVoltarLogin, onGoToLogin }) {
   const [enviado, setEnviado] = useState(false);
 
   const voltarParaLogin = onVoltarLogin || onGoToLogin;
-  const dominioOficial = "@sertao.rs.gov.br";
-  let sugestaoEmail = "";
-
-  if (email.length > 0 && !email.endsWith(dominioOficial)) {
-    if (!email.includes("@")) {
-      sugestaoEmail = dominioOficial;
-    } else {
-      const partes = email.split("@");
-      const dominioDigitado = partes[1];
-      const dominioEsperado = "sertao.rs.gov.br";
-      if (dominioEsperado.startsWith(dominioDigitado)) {
-        sugestaoEmail = dominioEsperado.substring(dominioDigitado.length);
-      }
-    }
-  }
-
-  const handleKeyDown = (e) => {
-    if ((e.key === 'Tab' || e.key === 'ArrowRight') && sugestaoEmail) {
-      e.preventDefault();
-      setEmail(email + sugestaoEmail);
-      if (erro) setErro('');
-    }
-  };
 
   const handleRecuperar = (e) => {
     e.preventDefault();
     setErro('');
 
     if (!email) {
-      setErro("Por favor, informe o seu e-mail institucional.");
-      return;
-    }
-
-    if (!email.toLowerCase().endsWith(dominioOficial)) {
-      setErro(`Informe um e-mail institucional válido (${dominioOficial}).`);
+      setErro("Por favor, informe o seu e-mail.");
       return;
     }
 
@@ -76,7 +48,7 @@ export default function EsqueceuSenha({ onVoltarLogin, onGoToLogin }) {
             
             <h1 className="text-3xl font-bold text-slate-900 tracking-tight mb-4">Esqueceu sua senha?</h1>
             <p className="text-sm text-slate-500 mb-8">
-              Informe o seu e-mail institucional abaixo para receber as instruções de redefinição de senha.
+              Informe o seu e-mail abaixo para receber as instruções de redefinição de senha.
             </p>
 
             {enviado ? (
@@ -98,24 +70,14 @@ export default function EsqueceuSenha({ onVoltarLogin, onGoToLogin }) {
               <form onSubmit={handleRecuperar} className="space-y-6">
                 
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">E-mail Institucional</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">E-mail</label>
                   <div className={`relative w-full bg-white border ${erro ? 'border-red-500' : 'border-slate-300'} rounded-lg focus-within:ring-2 focus-within:ring-[#2563eb] focus-within:border-transparent transition-all overflow-hidden`}>
-                    <div className="absolute inset-0 px-4 py-3 text-sm pointer-events-none flex items-center whitespace-nowrap overflow-hidden">
-                      <span className="text-transparent">{email}</span>
-                      {sugestaoEmail && (
-                        <span className="text-slate-400 flex items-center">
-                          {sugestaoEmail}
-                          <span className="ml-2 text-[9px] font-bold uppercase tracking-wider bg-slate-100 border border-slate-200 text-slate-500 px-1.5 py-0.5 rounded shadow-sm">Tab</span>
-                        </span>
-                      )}
-                    </div>
                     <input 
                       type="text" 
                       value={email}
                       onChange={(e) => { setEmail(e.target.value.replace(/\s/g, '')); if (erro) setErro(''); }}
-                      onKeyDown={handleKeyDown}
                       autoComplete="off"
-                      placeholder="servidor@sertao.rs.gov.br" 
+                      placeholder="seu@email.com" 
                       className="w-full px-4 py-3 bg-transparent text-sm focus:outline-none relative z-10 text-slate-900 placeholder:text-slate-400"
                     />
                   </div>
@@ -147,13 +109,13 @@ export default function EsqueceuSenha({ onVoltarLogin, onGoToLogin }) {
       {/* ========================================================= */}
       {/* LADO DIREITO - MAIS ALTO (-mt-36) E ESPAÇAMENTO ALINHADO  */}
       {/* ========================================================= */}
-      <div className="hidden lg:flex w-1/2 flex-col bg-[#ffffff] border-l border-slate-200 relative overflow-hidden px-12">
+      <div className="hidden lg:flex w-1/2 flex-col bg-[#0ea5e9]/[0.25] border-l border-slate-200 relative overflow-hidden px-12">
         <div className="absolute -top-[350px] -right-[350px] w-[800px] h-[800px] rounded-full border border-slate-900/[0.04] pointer-events-none"></div>
         <div className="absolute -top-[450px] -right-[450px] w-[1100px] h-[1100px] rounded-full border border-slate-900/[0.04] pointer-events-none"></div>
         <div className="absolute -top-[550px] -right-[550px] w-[1400px] h-[1400px] rounded-full border border-slate-900/[0.04] pointer-events-none"></div>
         <div className="absolute -top-[650px] -right-[650px] w-[1700px] h-[1700px] rounded-full border border-slate-900/[0.04] pointer-events-none"></div>
 
-        <div className="flex-1 flex flex-col items-center justify-center py-12 -mt-36 relative z-10">
+        <div className="flex-1 flex flex-col items-center justify-center py-12 -mt-36 relative">
           <div className="max-w-lg w-full flex flex-col items-center justify-center text-center">
             <div className="mb-5 w-full flex justify-center">
                <img 
