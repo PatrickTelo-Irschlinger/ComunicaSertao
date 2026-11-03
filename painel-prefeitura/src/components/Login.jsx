@@ -136,42 +136,43 @@ export default function Login({ onLogin, onGoToCadastro, onGoToEsqueceuSenha }) 
       </div>
 
       {/* ========================================================= */}
-      {/* LADO DIREITO - FUNDO AZUL CLARO (#0ea5e9 a 25%)           */}
+      {/* LADO DIREITO - FUNDO AZUL SÓLIDO (#2563eb)                */}
       {/* ========================================================= */}
-      <div className="hidden lg:flex w-1/2 flex-col bg-[#0ea5e9]/[0.25] border-l border-slate-200 relative overflow-hidden px-12">
-        <div className="absolute -top-[350px] -right-[350px] w-[800px] h-[800px] rounded-full border border-slate-900/[0.04] pointer-events-none"></div>
-        <div className="absolute -top-[450px] -right-[450px] w-[1100px] h-[1100px] rounded-full border border-slate-900/[0.04] pointer-events-none"></div>
-        <div className="absolute -top-[550px] -right-[550px] w-[1400px] h-[1400px] rounded-full border border-slate-900/[0.04] pointer-events-none"></div>
-        <div className="absolute -top-[650px] -right-[650px] w-[1700px] h-[1700px] rounded-full border border-slate-900/[0.04] pointer-events-none"></div>
+      <div className="hidden lg:flex w-1/2 flex-col bg-[#2563eb] relative overflow-hidden px-12">
+        <div className="absolute -top-[350px] -right-[350px] w-[800px] h-[800px] rounded-full border border-white/10 pointer-events-none"></div>
+        <div className="absolute -top-[450px] -right-[450px] w-[1100px] h-[1100px] rounded-full border border-white/10 pointer-events-none"></div>
+        <div className="absolute -top-[550px] -right-[550px] w-[1400px] h-[1400px] rounded-full border border-white/10 pointer-events-none"></div>
+        <div className="absolute -top-[650px] -right-[650px] w-[1700px] h-[1700px] rounded-full border border-white/10 pointer-events-none"></div>
 
-        {/* Sem z-10 aqui, para o mix-blend-multiply do brasão enxergar o fundo azul */}
         <div className="flex-1 flex flex-col items-center justify-center py-12 -mt-36 relative">
           <div className="max-w-lg w-full flex flex-col items-center justify-center text-center">
             
             {/* BRASÃO DE SERTÃO */}
-            <div className="mb-5 w-full flex justify-center">
-               <img 
-                 src={brasaoSertao} 
-                 alt="Brasão do Município de Sertão" 
-                 className="h-40 w-auto object-contain mix-blend-multiply" 
-               />
+            <div className="mb-6 w-full flex justify-center">
+              <div className="w-40 h-40 rounded-full bg-white shadow-lg overflow-hidden flex items-center justify-center">
+                <img 
+                  src={brasaoSertao} 
+                  alt="Brasão do Município de Sertão" 
+                  className="h-24 w-auto max-w-[75%] object-contain mix-blend-multiply" 
+                />
+              </div>
             </div>
 
-            {/* COMUNICA SERTÃO CENTRALIZADO E COM ESPAÇAMENTO CORRETO */}
+            {/* COMUNICA SERTÃO CENTRALIZADO */}
             <div className="w-full flex flex-col items-center">
               <div className="flex items-center justify-center gap-3 mb-3">
                 <div className="w-8 h-0.5 bg-[#eab308] shrink-0"></div>
-                <span className="text-[#f8e000] text-lg font-black tracking-[0.18em] pl-[0.18em] uppercase leading-none drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.45)]">
+                <span className="text-[#f8e000] text-lg font-black tracking-[0.18em] pl-[0.18em] uppercase leading-none drop-shadow-[0_1px_1px_rgba(0,0,0,0.25)]">
                   Comunica Sertão
                 </span>
                 <div className="w-8 h-0.5 bg-[#eab308] shrink-0"></div>
               </div>
               
-              <h2 className="text-5xl font-bold text-slate-900 leading-[1.18] tracking-tight">
+              <h2 className="text-5xl font-bold text-white leading-[1.18] tracking-tight">
                 Canal interativo e <br/>
                 direto com a <br/>
                 prefeitura de <br/>
-                <span className="inline-block mt-1 text-[#f8e000] drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.35)]">
+                <span className="inline-block mt-1 text-[#f8e000] drop-shadow-[0_1px_1px_rgba(0,0,0,0.25)]">
                   Sertão - RS
                 </span>
               </h2>

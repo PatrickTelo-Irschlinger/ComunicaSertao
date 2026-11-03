@@ -98,16 +98,16 @@ export default function Dashboard({ chamados = [], onSelectChamado, setActivePag
 
         {/* Total de Chamados */}
         <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm relative overflow-hidden flex flex-col justify-between">
-          <div className="flex items-center justify-between text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
-            <span>Total de Chamados</span>
-            <Ticket size={16} className="text-[#16a34a]" />
-          </div>
-          <div>
-            <h2 className="text-3xl font-extrabold text-slate-900">1.586</h2>
-            <p className="text-xs text-slate-400 mt-1 font-medium">+14% este mês</p>
-          </div>
-          <div className="h-1 bg-[#16a34a] rounded-full mt-5"></div>
-        </div>
+  <div className="flex items-center justify-between text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
+    <span>Total de Chamados</span>
+    <Ticket size={16} className="text-[#16a34a]" />
+  </div>
+  <div>
+    <h2 className="text-3xl font-extrabold text-slate-900">1.586</h2>
+    <p className="text-xs text-slate-400 mt-1 font-medium">+14% este mês</p>
+  </div>
+  <div className="h-1 bg-[#f8e000] rounded-full mt-5"></div>
+</div>
 
         {/* Em Andamento */}
         <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm relative overflow-hidden flex flex-col justify-between">
